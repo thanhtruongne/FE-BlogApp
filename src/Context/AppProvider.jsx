@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import { ConfigProvider, theme } from "antd";
 import vi from 'antd/locale/vi_VN';
 import { ThemeContext } from "./ThemeContext.jsx";
+import moment from "moment";
+import { logoPNG } from '../assets/svg_export';
+import 'moment/locale/vi'
+
 
 const AppProvider = ({children}) => {
     const [loading, setLoading] = useState(true)
-    const [general, setGeneral] = useState({ logo: '', welcome: '', permissions: [] })
+    const [general, setGeneral] = useState({ logo: logoPNG, welcome: '', permissions: [] })
     const [disabledBtnActivity, setDisableBtnActivity] = useState(true)
-    const [antdTheme, setAntdTheme] = useState(0)
     const [widthScreen, setWidthScreen] = useState(window.innerWidth);
-
+    const [dateFormat,setDateFormat] = useState(moment().locale('vi'));
     const lightTheme = {
         components: {
             Table: {
@@ -39,6 +42,7 @@ const AppProvider = ({children}) => {
         }
     };
 
+
     useEffect(() => {
         window.onresize = () => {
             setWidthScreen(window.innerWidth)
@@ -49,11 +53,12 @@ const AppProvider = ({children}) => {
 
     return (
         <ThemeContext.Provider value={{
-            loading, setLoading, general, setGeneral, setAntdTheme, widthScreen,
-            disabledBtnActivity, setDisableBtnActivity
+            loading, setLoading, general, setGeneral, widthScreen,
+            disabledBtnActivity, setDisableBtnActivity, dateFormat,setDateFormat
         }}>
-            <ConfigProvider theme={nightMode > 0 ? darkTheme : lightTheme} locale={vi}>
-                <div className={nightMode > 0 ? 'night-mode-layout' : 'light-mode-layout'}>
+            <ConfigProvider theme={lightTheme} locale={vi}>
+                {/* <div className={nightMode > 0 ? 'night-mode-layout' : 'light-mode-layout'}> */}
+                <div className={'light-mode-layout'}> 
                     {children}
                 </div>
             </ConfigProvider>

@@ -1061,10 +1061,12 @@ button{
             .ant-menu-title-content{
                 color: var(--color-menu-hover) !important;
             }
+           & {
             background: var(--background-menu-hover) !important;
             svg > g {
                 fill: var(--color-icon-hover) !important;
             }
+           }  
         }
         .ant-menu-root.ant-menu > .ant-menu-item-selected,
         .ant-menu-root.ant-menu .ant-menu-submenu.ant-menu-submenu-vertical.ant-menu-submenu-selected .ant-menu-submenu-title,
@@ -1100,11 +1102,14 @@ button{
             .ant-menu-title-content{
                 color: var(--color-menu-hover) !important;
             }
-            color: var(--color-menu-hover) !important;
-            background: var(--background-menu-hover) !important;
-            svg > g {
-                fill: var(--color-icon-hover) !important;
+            & {
+                color: var(--color-menu-hover) !important;
+                background: var(--background-menu-hover) !important;
+                svg > g {
+                    fill: var(--color-icon-hover) !important;
+                }
             }
+            
         }
 
         .ant-menu-submenu-vertical .ant-menu-item-icon{
@@ -1273,11 +1278,14 @@ button{
             .ant-menu-title-content{
                 color: #343a40 !important;
             }
-            color: #343a40 !important;
-            background-color: #ffffffe6 !important;
-            svg > g {
-                fill: #343a40 !important;
+            & {
+                color: #343a40 !important;
+                background-color: #ffffffe6 !important;
+                svg > g {
+                    fill: #343a40 !important;
+                }
             }
+           
         }
 
         .ant-menu-item:not(.ant-menu-item-selected), .ant-menu-submenu:not(.ant-menu-submenu-selected) {

@@ -13,7 +13,7 @@ Table Of Content
 /* ==================================================================================
 Fonts
 ===================================================================================== */
-@import url("../../../public/css/font_Open_Sans_300_300i_400_400i_600_600i_700_700i_800_800i_Roboto_100_100i_300_300i_400_400i_500_500i_700_700i_900_900i_display_swap.css");
+@import url('../fonts/font_Open_Sans_300_300i_400_400i_600_600i_700_700i_800_800i_Roboto_100_100i_300_300i_400_400i_500_500i_700_700i_900_900i_display_swap.css');
 
 /* HTML5 display-role reset for older browsers */
 article,

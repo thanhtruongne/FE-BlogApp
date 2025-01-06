@@ -1,11 +1,13 @@
-import './bootstrap';
-import '../sass/app.scss'
+import './boostrap';
+import './sass/app.scss'
+import './input.css'
 import React from 'react';
-import ReactDOM from 'react-dom';
-// import AppPri from "@/Context/AppProvider.jsx";
-import AppProvider from '@/Context/AppProvider.jsx';
-import App from "@/app.jsx";
-ReactDOM.render(
+import ReactDOM from "react-dom/client";
+import AppProvider from './Context/AppProvider.jsx';
+import App from "./App.jsx";
+
+const root = ReactDOM.createRoot(document.getElementById("root")); 
+root.render(
     <AppProvider>
         <App />
     </AppProvider>,
