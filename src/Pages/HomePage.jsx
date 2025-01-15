@@ -87,7 +87,7 @@
                                         </li>
                                         {/* Tác giã nổi bật */}
                                         <li className="author w-[240px] pb-[82px] mr-0 block absolute right-0 h-full">
-                                            <a href="" className="text-[14px] leading-[16px] text-[#9f224e] mb-[5px] w-full mt-[4px font-bold]">
+                                            <a href="" style={{ color:'#9f224e' }} className="text-[14px] leading-[16px] mb-[5px] w-full mt-[4px] font-bold">
                                                 Góc nhìn
                                             </a>
                                             <article className="w-full pr-0 pb-0 mb-0" style={{ position:'initial' }}>
@@ -110,8 +110,8 @@
                                                             <span>121</span>
                                                         </a>
                                                     </p>
-                                                    <div className="w-[72px] m-0 relative rounded-[50%]" >
-                                                        <a href="" className="thumb" style={{ paddingTop:'100%' }}>
+                                                    <div className="w-[72px] m-0 relative " >
+                                                        <a href="" className="thumb rounded-full" style={{ paddingTop:'100%' }}>
                                                             <img 
                                                               className="-translate-x-2/4  left-2/4" 
                                                             src="https://i1-vnexpress.vnecdn.net/2023/09/30/DuyLinhremovebgpreviewpng-1696038222.png?w=100&h=100&q=100&dpr=1&fit=crop&s=aUjaP87_I3dgpxcng5fcAg" alt="" />

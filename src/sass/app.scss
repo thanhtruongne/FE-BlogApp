@@ -21,6 +21,10 @@ body {
     }
 }
 
+.ant-table-thead >tr>th {
+    background: #f5f4f4 !important;
+}
+
 .ant-menu-submenu-popup{
     .ant-menu-item.ant-menu-item-selected{
         background: var(--background-menu) !important;
@@ -176,8 +180,8 @@ body {
 .ant-btn-primary:not(.ant-btn-disabled){
     //border-color: var(--border-btn) !important;
     border-color: transparent !important;
-    background: var(--background-btn-hover) !important;
-    color: var(--color-btn-hover) !important;
+    background-color: #9b0305 !important;
+    color: #fff !important;
 }
 
 .ant-btn-primary:not(.ant-btn-disabled):hover {
@@ -234,14 +238,14 @@ body {
     background: var(--primary-color) !important;
 }
 
-a:not(.menu-link):not(.login_azure_btn){
-    color: var(--color-link) !important;
-    text-decoration: none !important;
-}
+// a:not(.menu-link):not(.login_azure_btn){
+//     color: var(--color-link) !important;
+//     text-decoration: none !important;
+// }
 
-a:not(.menu-link):not(.login_azure_btn):hover{
-    color: var(--color-link-hover) !important;
-}
+// a:not(.menu-link):not(.login_azure_btn):hover{
+//     color: var(--color-link-hover) !important;
+// }
 
 button{
     outline: none !important;
@@ -883,9 +887,9 @@ button{
 .ant-spin{
     color: var(--primary-color) !important;
 }
-.ant-spin .ant-spin-dot-item{
-    background-color: var(--primary-color) !important
-}
+// .ant-spin .ant-spin-dot-item{
+//     background-color: var(--primary-color) !important
+// }
 
 .ant-pagination .ant-pagination-item-active
 {
@@ -914,11 +918,11 @@ button{
     box-shadow: 0 0 0 2px var(--box-shadow) !important
 }
 
-.ant-modal-content,
-.ant-dropdown .ant-dropdown-menu
-{
-    background: var(--modal-dropdown-bg) !important
-}
+// .ant-modal-content,
+// .ant-dropdown .ant-dropdown-menu
+// {
+//     background: var(--modal-dropdown-bg) !important
+// }
 .css-1nmdiq5-menu{
     background: var(--modal-dropdown-bg) !important;
     scrollbar-color: var(--text-color) transparent;

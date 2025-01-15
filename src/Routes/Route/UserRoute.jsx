@@ -1,8 +1,8 @@
 import React from "react";
-import UserPath from "../RoutePaths/UserPath";
+import GeneralPaths from "../RoutePaths/GeneralPaths";
 import HomePage from "../../Pages/HomePage";
 const UserRoute = [
-    { path: UserPath.HOMEPAGE, element: <HomePage /> },
+    { path: GeneralPaths.HOMEPAGE, element: <HomePage /> },
 ]
 
 export default UserRoute

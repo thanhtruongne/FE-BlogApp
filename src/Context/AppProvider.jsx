@@ -8,11 +8,10 @@ import 'moment/locale/vi'
 
 
 const AppProvider = ({children}) => {
-    const [loading, setLoading] = useState(true)
     const [general, setGeneral] = useState({ logo: logoPNG, welcome: '', permissions: [] })
-    const [disabledBtnActivity, setDisableBtnActivity] = useState(true)
     const [widthScreen, setWidthScreen] = useState(window.innerWidth);
     const [dateFormat,setDateFormat] = useState(moment().locale('vi'));
+
     const lightTheme = {
         components: {
             Table: {
@@ -53,11 +52,9 @@ const AppProvider = ({children}) => {
 
     return (
         <ThemeContext.Provider value={{
-            loading, setLoading, general, setGeneral, widthScreen,
-            disabledBtnActivity, setDisableBtnActivity, dateFormat,setDateFormat
+            general, setGeneral, widthScreen, dateFormat,setDateFormat
         }}>
             <ConfigProvider theme={lightTheme} locale={vi}>
-                {/* <div className={nightMode > 0 ? 'night-mode-layout' : 'light-mode-layout'}> */}
                 <div className={'light-mode-layout'}> 
                     {children}
                 </div>

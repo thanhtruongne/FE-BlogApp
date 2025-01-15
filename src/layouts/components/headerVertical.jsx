@@ -31,7 +31,7 @@ const HeaderVertical = (props) => {
       >
          <div className="mx-auto w-full">
          <Row className='row_header' justify='space-between' >
-                <Col xl={7} lg={8} className={'flex items-center justify-center overflow-visible'}>
+                <Col xl={8} lg={9} className={'flex items-center justify-center overflow-visible'}>
                     <Link to={'/'}>
                         <img src={general?.logo} height={28} width={150}/>
                     </Link>
