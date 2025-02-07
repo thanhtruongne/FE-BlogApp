@@ -1,18 +1,18 @@
-import Cookies  from 'js-cookie';
+import Cookies from 'js-cookie';
 
 const setTokens = (accessToken, refreshToken) => {
     Cookies.set("accessToken", accessToken, { 
       // secure: true,       
       httpOnly: false,    
-      // sameSite: "Strict", 
-      expires: 1          
+      sameSite: "Strict", 
+      // expires: 1          
     });
   
     Cookies.set("refreshToken", refreshToken, { 
       // secure: true,
       httpOnly: false,
-      // sameSite: "Strict",
-      expires: 7 
+      sameSite: "Strict",
+      // expires: 7 
     });
   };
 
@@ -35,16 +35,9 @@ const setClientID = (clientID) => {
   return Cookies.set('x-client-id',clientID,{
     // secure: true,       
     httpOnly: false,    
-    // sameSite: "Strict", 
-    expires: 1     
+    sameSite: "Strict",  
   })
 }
 
-export {
-    setTokens,
-    getAccessToken,
-    getRefreshToken,
-    clearTokens,
-    setClientID,
-    getClientID,clearClientID
-}
+export { clearClientID, clearTokens, getAccessToken, getClientID, getRefreshToken, setClientID, setTokens };
+

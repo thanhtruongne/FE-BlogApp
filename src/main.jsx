@@ -1,16 +1,19 @@
-import './boostrap';
-import './sass/app.scss'
-import './input.css'
 import React from 'react';
 import ReactDOM from "react-dom/client";
-import AppProvider from './Context/AppProvider.jsx';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import App from "./App.jsx";
-
+import './assets/sass/app.scss';
+import './boostrap';
+import './input.css';
+import { persiststore, store } from './slices/index.js';
 
 const root = ReactDOM.createRoot(document.getElementById("root")); 
 root.render(
-    <AppProvider>
-        <App />
-    </AppProvider>,
-    document.getElementById('root')
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persiststore}> 
+            <App />
+        </PersistGate>
+    </Provider>
 );
+document.getElementById('root')

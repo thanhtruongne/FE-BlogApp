@@ -1,60 +1,149 @@
-import React, { useState,useEffect } from "react"
-import { DownOutlined } from '@ant-design/icons';
-import { Form, Radio, Space,Tag, Switch, Table,Dropdown } from 'antd';
-import GeneralApi from "../../ServicesAPI/General.api";
+import { DownOutlined, ExclamationCircleFilled } from '@ant-design/icons';
+import { Button, Dropdown, Form, Modal, Pagination, Space, Table, Tag } from 'antd';
 import { HttpStatusCode } from "axios";
-
+import React, { useCallback, useEffect, useState } from "react";
+import GeneralAdminApi from '../../apis/admin/General.api';
+import showMessage from '../../Helpers/showMessage';
+import FormResourceCreate from './components/FormResourceCreate';
 const UserPages = () => {
   const [data,setData] = useState([]);
   const [bordered, setBordered] = useState(false);
   const [loading, setLoading] = useState(false);
   const [size, setSize] = useState('large');
-  const [showTitle, setShowTitle] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
-  const [showFooter, setShowFooter] = useState(true);
   const [rowSelection, setRowSelection] = useState({});
   const [tableLayout, setTableLayout] = useState(undefined);
-  const [top, setTop] = useState('none');
-  const [bottom, setBottom] = useState('bottomRight');
+  const [optionsFilter,setOptionFilter] = useState({});
+  const [params , setParams] = useState({})
+  const [actionDo , setAction] = useState({ // để mã code hay ký tự cg dc
+      block : 'code#blockAcc',
+      delete : 'code#remove',
+      edit : 'code#edit'
+  })
+  const [loadingModal, setLoadingModal] = useState(false)
+  const [openModal,setOpenModal] = useState(false)
+  const [fieldModal,setfieldModal] = useState({
+    email : '',
+    address : '',
+    password : 'lock',
+    status : '',
+    role : '',
+    _id : '',
+    phone : '',
+    full_name: '',
+  })  
+  const [loadingBtn,setLoadingBtn] = useState(false);
+  
 
-  const fetchDataUsers = async() => {
-   
+  const {confirm} = Modal;
+  const [form] = Form.useForm();
+
+  const showModal = useCallback(async(id) => { 
+    setOpenModal(!openModal)
+    setLoadingModal(!loadingModal)
+    try {
+      let response = await GeneralAdminApi.getDetailUser(id)
+      if(response?.status == HttpStatusCode.Ok) {
+        setfieldModal(response?.data)
+      }
+    } catch (error) {
+      showMessage(error.message,'error');
+      
+    }
+    setLoadingModal(!loadingModal)
+
+  },[openModal])
+
+  const handleCloseModal = () => {
+    form.resetFields();
+    setOpenModal(!openModal)
+  }
+
+  const fetchDataUsers = async(params) => {
        try {
-        setLoading(true)
-        const res = await GeneralApi.getAllDataUsers();
-        if(res?.status == HttpStatusCode.Ok) {
-          setData(res?.data);
-          setLoading(false)
-        }
+          setLoading(true)
+          const res = await GeneralAdminApi.getAllDataUsers(params);
+          if(res?.status == HttpStatusCode.Ok) {
+              setData(res?.data);
+              setOptionFilter(res.options)
+              setLoading(false)
+          }
        } catch (error) {
-          console.log(error);
+          showMessage(error.message,'error')
           setLoading(false)
+          return;
        }
   }
 
   useEffect(() => {
-    fetchDataUsers()
-  },[])
+    fetchDataUsers(params)
+  },[params])
 
-  const itemsAction = [ 
-    {
-      key: '1',
-      danger: true,
-      label : (
-        <a target="_blank" rel="noopener noreferrer" href="#">
-          Xóa
-        </a>
-      )
-    },
-    {
-      key: '2',
-      label : (
-        <a target="_blank" rel="noopener noreferrer" href="#">
-         Gửi thông báo
-        </a>
-      )
-    },
-  ]
+
+  const handleOptionUser = (type,id,email = null) => {
+    switch(type) {
+        case actionDo.block :
+          break;
+        case actionDo.delete:
+          showDeleteConfirm(email,id); // xóa resource
+          break;
+        case actionDo.edit : 
+          showModal(id) // mở modal
+          break;
+        default : 
+          break; 
+    }
+  }
+
+  const handleSubmit = async(data) => {
+    setLoadingBtn(true)
+    try {
+      const response = await GeneralAdminApi.updateDataUser(data,data?._id)
+      if(response?.status == HttpStatusCode.Ok) {
+        showMessage(response?.message,'success')
+        fetchDataUsers()
+        handleCloseModal();
+      } else {
+        showMessage(response?.message,'error')
+      }
+    } catch (error) {
+      console.log(error,'Error')
+      showMessage(error.message,'error')
+    }
+    setLoadingBtn(false)
+  }
+
+
+  const showDeleteConfirm = (email,_id) => {
+    confirm({
+      title: 'Bạn có chắc muốn xóa dữ liệu này không !',
+      icon: <ExclamationCircleFilled />,
+      content: email || ' ',
+      okText: 'Confirm',
+      cancelText: 'No',
+      async onOk() {
+         try {
+           const resovleData = await GeneralAdminApi.removeResourceUser(_id)
+           console.log(resovleData)
+           if(resovleData?.status == HttpStatusCode.Ok) {
+              showMessage(resovleData?.message,'success')
+              fetchDataUsers()
+              
+           } else {
+              showMessage(resovleData?.message,'warning')
+              return
+           }
+         } catch (error) {
+          showMessage(error.message,'error');
+          return
+         }
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
 
   const tableColumns = [
     {
@@ -83,31 +172,66 @@ const UserPages = () => {
       title: 'Bài đăng',
       dataIndex : 'posts'
     },
+    
     {
       title: 'Trạng thái',
       dataIndex : 'status',
       key: 'status',
-      render : (value) => 
-       (
-        <span>
-          <Tag color={value == 'Active' ? 'success' : "error"} key={value}>
-              {value}
-          </Tag> 
-        </span>
-       )
+      render : (value) =>  {
+      return  (
+          <span>
+            <Tag color={value == 'Active' ? '#87d068' : "#f50"} key={value}>
+                {value}
+            </Tag> 
+          </span>
+         )
+      }
+       
+     
       
+    },
+    {
+      title: 'Hoạt động',
+      dataIndex : 'timeMoment'
     },
     {
       title : 'Action',
       key: 'action',
       sort  :true,
-      render : () => {
+      render : (record) => {       
+      const itemsAction = [ 
+        {
+          key: '1',
+          danger: true,
+          label : (
+            <a onClick={() => handleOptionUser(actionDo.delete,record._id,record?.email)} rel="noopener noreferrer" href="#">
+              Xóa
+            </a>
+          )
+        },
+        {
+          key: '2',
+          label : (
+            <a target="_blank" rel="noopener noreferrer" href="#">
+            Gửi thông báo
+            </a>
+          )
+        },
+        // {
+        //   key: '3',
+        //   label : (
+        //     <Button onClick={() => handleOptionUser(actionDo.block,record._id)}>
+        //         Khóa
+        //     </Button>
+        //   )
+        // },
+      ]
       return(
         <Space size="middle">
-        <a>Chỉnh sửa</a>
+          <Button onClick={() => handleOptionUser(actionDo.edit,record._id)} color='default' type="primary">Chỉnh sửa</Button>
         <Dropdown
-           menu={{ items: itemsAction }} // Use menu with items for Ant Design v5
-           trigger={["click"]} // Define the trigger explicitly
+           menu={{ items: itemsAction }}
+           trigger={["click"]} 
           >
             <a onClick={(e) => e.preventDefault()}>
               <Space>
@@ -133,26 +257,48 @@ const UserPages = () => {
     tableLayout: tableLayout ,
   };
 
-  const scroll = {
-    y  : 240,
-    x : '100vw'
-  };
-
   return (
     <div>
     <div className="mt-3 grid  gap-5">
         <div className="!z-5 relative flex flex-col rounded-[20px] bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:shadow-none w-full h-full p-4">       
         <Table
           {...tableProps}
-          pagination={{
-            position: [top, bottom],
-          }}
+          pagination={false}
           columns={tableColumns}
           dataSource={data}
           // scroll={scroll}
         />
+        <Pagination 
+          pageSize={3}
+          defaultCurrent={optionsFilter?.totalPages}
+          total={optionsFilter?.totalItems}
+          onChange={(page, size) => {
+             setParams({
+                page : page
+             })
+          }}
+          style={{ marginTop: "20px", justifyContent: "right" }}
+        />
         </div>
     </div>
+    
+    {/* create edit datas */}
+    <Modal
+        title="Chỉnh sửa"
+        open={openModal}
+        // onOk={handleSubmit}
+        confirmLoading={loadingModal}
+        footer={null}
+        onCancel={handleCloseModal}
+      >
+        <FormResourceCreate 
+         data={fieldModal}
+         handleSubmit={handleSubmit}
+         handleCloseModal={handleCloseModal}
+         loadingBtn={loadingBtn}
+        />
+    </Modal>
+  
   </div>
   )
    

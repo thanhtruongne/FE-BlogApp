@@ -1,21 +1,22 @@
-import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
-import GeneralPaths from "./Routes/RoutePaths/GeneralPaths";
-import UserRoute from './Routes/Route/UserRoute';
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import UserLayouts from './layouts/UserLayouts';
+import UserRoute from './Routes/Route/UserRoute';
+import GeneralPaths from "./Routes/RoutePaths/GeneralPaths";
 
 import AdminLayouts from './layouts/admins/AdminLayouts';
+import Error404 from "./Pages/404";
+import AuthLoginSystem from './Pages/Admin/Auth';
+import PrivateRoute from "./Routes/PrivateRoute";
 import AdminRoute from './Routes/Route/AdminRoute';
 import AdminPaths from './Routes/RoutePaths/AdminPaths';
-import AuthLoginSystem from './Pages/Admin/Auth';
-import Error404 from "./Pages/404";
-import AuthenticatedProvider from "./Context/AuthencatedContext";
+
 
 
 function App() {
   const router = createBrowserRouter([
     {
       path:'/',
-      element: <Navigate to={GeneralPaths.HOMEPAGE}/>
+      element: <Navigate to={GeneralPaths.HOMEPAGE} replace/>,
     },
     // 404
     {
@@ -33,11 +34,14 @@ function App() {
       element: <AuthLoginSystem />,
     },
     {
-      element: (
-         <AuthenticatedProvider>
-            <AdminLayouts/>
-         </AuthenticatedProvider>
-      ),
+      element : 
+        ( <PrivateRoute>
+
+          <AdminLayouts/>
+
+         </PrivateRoute>
+         )
+       ,
       children : AdminRoute
     }
   ])

@@ -1,15 +1,9 @@
-import Icon from '@ant-design/icons';
-import {Layout, Tooltip} from 'antd';
+import { Layout } from 'antd';
+import { MenuButton, ScrollPage } from '../components/Generals/general_export';
 import LayoutHorizontal from "./LayoutTypes/layoutHorizon";
-import { useContext } from "react";
-import { ThemeContext } from '../Context/ThemeContext';
-import { ScrollPage,MenuButton } from '../components/Generals/general_export';
-import HomePage from '../Pages/HomePage';
 
 
-const UserLayouts = () => {
-    const {items , dataMenu, general,dateFormat} = useContext(ThemeContext)
-    
+const UserLayouts = () => { 
     return (
         <Layout id='authenticate-layout' className='bg-white' style={{ position: 'relative' }}>
         <div style={{ position: "relative" }}>
@@ -41,8 +35,8 @@ const UserLayouts = () => {
         {/* horizon */}
        <LayoutHorizontal 
         className='horizontal'
-        items={items}
-        items2={dataMenu}
+        items={''}
+        items2={''}
         avatar={''}
         dateNow={dateFormat?.format('dddd, D/M/YYYY')}
         logo={general?.logo}

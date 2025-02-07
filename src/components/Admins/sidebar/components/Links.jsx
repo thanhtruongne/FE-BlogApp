@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import {DashIcon} from "../../icons/icon_export";
+import { DashIcon } from "../../icons/icon_export";
 export function SidebarLinks(props) {
   // Chakra color mode
   let location = useLocation();
@@ -16,7 +16,6 @@ export function SidebarLinks(props) {
 
          return (
           <Link key={index} to={route?.path}>
-            {console.log(route)}
             <div className="relative mb-3 flex hover:cursor-pointer">
               <li
                 className="my-[3px] flex cursor-pointer items-center px-8"

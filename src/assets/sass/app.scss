@@ -284,9 +284,9 @@ button{
     margin-left: 0 !important;
 }
 
-.cascader-unit .ant-select-selector{
-    padding: 1.12rem .8rem !important;
-}
+// .cascader-unit .ant-select-selector{
+//     padding: 1.12rem .8rem !important;
+// }
 
 .loader-container{
     min-height: 100vh;
@@ -792,12 +792,12 @@ button{
 }
 
 //Antd dropdown
-.ant-select-dropdown{
-    .ant-select-item.ant-select-item-option-active.ant-select-item-option-selected{
-        background: var(--primary-color) !important;
-        color: white !important;
-    }
-}
+// .ant-select-dropdown{
+//     .ant-select-item.ant-select-item-option-active.ant-select-item-option-selected{
+//         background: var(--primary-color) !important;
+//         color: white !important;
+//     }
+// }
 
 //Antd picker calendar
 
@@ -835,19 +835,19 @@ button{
 }
 
 // Antd Input
-.ant-picker, .ant-checkbox-inner,
-.css-1vhxhen-control:hover,
-.ant-input-outlined:hover,
-.ant-input-number-outlined:hover,
-.ant-input-number-outlined,.ant-select-selector,
-.ant-input-outlined
-{
-    border-color: var(--border-color) !important
-}
+// .ant-picker, .ant-checkbox-inner,
+// .css-1vhxhen-control:hover,
+// .ant-input-outlined:hover,
+// .ant-input-number-outlined:hover,
+// .ant-input-number-outlined,.ant-select-selector,
+// .ant-input-outlined
+// {
+//     border-color: var(--border-color) !important
+// }
 
-.ant-input-outlined:hover{
-    box-shadow: none;
-}
+// .ant-input-outlined:hover{
+//     box-shadow: none;
+// }
 
 
 //Typography

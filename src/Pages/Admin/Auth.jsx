@@ -1,40 +1,49 @@
-import {Layout, Form, Input, Button, Select} from "antd"
-import { useNavigate } from "react-router-dom";
-import showMessage from "../../Helpers/showMessage";
-import Icon, { UserOutlined, KeyOutlined, LoginOutlined, ReloadOutlined, SecurityScanOutlined } from "@ant-design/icons"
+import { KeyOutlined, LoginOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Form, Input } from "antd";
+import { HttpStatusCode } from "axios";
+import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import AuthencationApi from "../../apis/Authencation.api";
 import { logoPNG } from "../../assets/svg_export";
-import AuthencationApi from "../../ServicesAPI/Authencation.api";
+import showMessage from "../../Helpers/showMessage";
 import AdminPaths from "../../Routes/RoutePaths/AdminPaths";
-import { setTokens,setClientID,clearClientID,clearTokens,getAccessToken,getClientID } from "../../utils/cookies";
-import GeneralPaths from "../../Routes/RoutePaths/GeneralPaths";
-import { jwtDecode } from "jwt-decode";
-
+import GeneralPaths from '../../Routes/RoutePaths/GeneralPaths';
+import { getUserCurrent, login } from "../../slices/auth";
+import { clearClientID, clearTokens, getAccessToken, getClientID } from "../../utils/cookies";
 
 
 
 const  AuthLoginSystem = () => {
-  const [loadingBtn, setLoadingBtn] = useState(false)
-  const [loading,setLoading] = useState(true);
+  const [loadingBtn,setLoadingBtn] = useState(false);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+  const dispatch = useDispatch()
   const [form] = Form.useForm();
-  const [auth, setAuth] = useState('')
   const navigate = useNavigate();
 
 
   useEffect(() => {
-    const access = getAccessToken(),clientID = getClientID();
-    if(access != 'undefined' && clientID != 'undefined') {
-       const decoded = jwtDecode(access);
-       if(decoded?.userID == clientID) {
-          return  navigate(GeneralPaths.NOTFOUND)
-       }
-       else { // phát hiện hacker dùng token để giả data
-          clearClientID();
-          clearTokens();
-          return  navigate(AdminPaths.LOGIN)
-       }
-    }
-  },[navigate])
+     try {
+        const access = getAccessToken(),clientID = getClientID();
+        if( access !== undefined && clientID !== undefined) {
+          const decoded = jwtDecode(access);
+          if(decoded?.userID == clientID) {
+                navigate(GeneralPaths.NOTFOUND)
+          }
+          else { // phát hiện hacker dùng token để giả data
+              clearClientID();
+              clearTokens();
+                navigate(GeneralPaths.NOTFOUND)
+          }
+        }
+        if(isAuthenticated)  navigate(GeneralPaths.NOTFOUND)
+
+     } catch (error) {
+      console.log(error)
+     }
+    
+  },[isAuthenticated,navigate])
 
   
 
@@ -44,19 +53,22 @@ const  AuthLoginSystem = () => {
     if(values) {
        try {
         const res = await AuthencationApi.loginAdminSystem(values);
-        if(res?.status == 'error') {
+        console.log(res)
+        if(res?.status != HttpStatusCode.Ok) {
           showMessage(res?.message, res?.status);
           setLoadingBtn(false);
           return;
         } else {
-            setClientID(res?.data?.users?._id);
-            setTokens(res?.data?.tokens?.access_token , res?.data?.tokens?.refresh_token);
-            showMessage(res?.message,'success');
-            navigate('/' + AdminPaths.DASHBOARD);
+          showMessage(res?.message,'success');
+          
+          dispatch(login(res.data)) // set up tokens vào redux
+          
+          await dispatch(getUserCurrent()).unwrap() // fetch user profile
+          navigate(AdminPaths.DASHBOARD);
         }
 
        } catch (error) {
-          console.log('Error: ', error.message)
+          showMessage(error?.message,'error');
        } 
        setLoadingBtn(false)
     }
