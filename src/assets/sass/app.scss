@@ -79,14 +79,14 @@ body {
 .ant-tabs {
     .ant-tabs-tab.ant-tabs-tab-active{
         .ant-tabs-tab-btn{
-            color:  var(--primary-color) !important;
+            color:  #9f224e;
         }
     }
     .ant-tabs-tab:hover{
-        color:  var(--primary-color) !important;
+        color:  #9f224e;
     }
     .ant-tabs-ink-bar {
-        background: var(--primary-color) !important;
+        background: #9f224e;
     }
 
 }
@@ -175,17 +175,13 @@ body {
 
 .ant-btn{
     box-shadow: none !important;
-}
-
-.ant-btn-primary:not(.ant-btn-disabled){
-    //border-color: var(--border-btn) !important;
     border-color: transparent !important;
-    background-color: #9b0305 !important;
-    color: #fff !important;
+    background-color: #9f224e ;
 }
 
 .ant-btn-primary:not(.ant-btn-disabled):hover {
     //border-color: var(--border-btn) !important;
+    background-color: #9f224e;
     border-color: transparent !important;
 }
 
@@ -226,9 +222,9 @@ body {
     font-weight: 500 !important;
 }
 
-.ant-switch.ant-switch-checked{
-    background: var(--primary-color) !important;
-}
+// .ant-switch.ant-switch-checked{
+//     background: var(--primary-color) !important;
+// }
 
 .ant-progress .ant-progress-bg{
     background: var(--primary-color) !important;
@@ -893,7 +889,7 @@ button{
 
 .ant-pagination .ant-pagination-item-active
 {
-    border-color: var(--primary-color) !important;
+    border-color: #c2c7d0  !important;
 }
 
 .ant-picker, .ant-checkbox-inner,
@@ -1346,7 +1342,7 @@ button{
             background: #343a40 !important;
         }
         .ant-tabs {
-            background-color: transparent;
+            background-color: #9f224e;
         }
     }
 }

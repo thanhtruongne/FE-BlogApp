@@ -8,7 +8,6 @@ class AuthencationApi {
 
     async refreshToken() {
         const refresh_Token = getRefreshToken()
-        console.log(refresh_Token,'refresh_Token')
         return  await axiosIntance.post(import.meta.env.VITE_APP_SERVER + '/user/refreshToken',{},{
             headers :{
                 Refreshtoken : refresh_Token

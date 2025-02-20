@@ -1,15 +1,14 @@
-import { useLocation,useNavigate } from "react-router-dom";
 
 
-const wrapperBaseComponent = (Component) => (props) => {
-    const location = useLocation();
-    // const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    return <Component {...props} location={location} navigate={navigate}/>
+const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
 }
 
 
-export {
-    wrapperBaseComponent
-}
+export { getBase64 };
+

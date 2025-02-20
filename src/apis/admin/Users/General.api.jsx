@@ -1,4 +1,4 @@
-import axiosIntance from '../../utils/axios'
+import axiosIntance from '../../../utils/axios'
 
 
 class GeneralAdminApi {
@@ -11,10 +11,18 @@ class GeneralAdminApi {
     async updateDataUser(payload,id) {
         return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_LOCAL + '/user/update/' + id, payload)
     }
-
+    
+    async storeDataUser(payload) {
+        return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_LOCAL + '/user/store', payload, {
+           headers: {
+                "content-type": 'multipart/form-data'
+            }
+        })
+    }
     async getDetailUser(id) {
         return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_LOCAL + '/user/detail/' + id)
     }
+
     async removeResourceUser(id) {
         return await axiosIntance.delete(import.meta.env.VITE_APP_SERVER_LOCAL + '/user/delete/' + id)
     }

@@ -1,18 +1,18 @@
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { Button, Form, Input, Select, Space } from "antd";
 import { useEffect } from "react";
-
 import showMessage from "../../../Helpers/showMessage";
+import UploadAvatarResource from './UploadAvatarResource';
 
-const FormResourceCreate = ({data,handleSubmit,handleCloseModal,loadingBtn}) => {
-  const [form] = Form.useForm()
+const FormResourceCreate = ({data,handleSubmit,handleCloseModal,loadingBtn,setData,type,form}) => {
   const { Option } = Select;
   
   const handleSubmitData = async() => {
     try {
         const value = await form.validateFields()
+        console.log(value)
         if(value) 
-            handleSubmit(value)      
+            handleSubmit(value,type)      
     } catch (error) {
        console.log('Error',error)
        showMessage(error.message,'error') 
@@ -29,6 +29,7 @@ const FormResourceCreate = ({data,handleSubmit,handleCloseModal,loadingBtn}) => 
         layout="vertical" 
         autoComplete="off"
         onFinish={handleSubmitData}
+            
     >
         <Form.Item
          name='_id'
@@ -39,6 +40,17 @@ const FormResourceCreate = ({data,handleSubmit,handleCloseModal,loadingBtn}) => 
         />   
         </Form.Item>  
         
+        {/* Image */}
+        <Form.Item
+         name='avatar'
+         
+        >
+            <UploadAvatarResource
+              data={data}
+              setData={setData}
+            />
+            {/* <input type="file" name='avatar' value={data?.avatar} /> */}
+        </Form.Item>  
 
         <Form.Item
          name='full_name'
@@ -68,9 +80,9 @@ const FormResourceCreate = ({data,handleSubmit,handleCloseModal,loadingBtn}) => 
         </Form.Item>
 
         <Form.Item
-         name='password'
+        //  name='password'
          label={'Mật khẩu'}  
-         rules={[{ required: true, message: 'Mật khẩu không được bỏ trống' }]}
+        //  rules={[{ required: true, message: 'Mật khẩu không được bỏ trống' }]}
         >
             <Input
                type="password"
@@ -111,8 +123,8 @@ const FormResourceCreate = ({data,handleSubmit,handleCloseModal,loadingBtn}) => 
          name='status'
          label={'Trạng thái'}     
         >
-          <Select placeholder={"Chọn trạng thái"}>
-            <Option value="Active">Active <CheckCircleFilled  style={{ color : "green" }} /></Option>
+          <Select placeholder={"Chọn trạng thái"} >
+            <Option value="Active">Active <CheckCircleFilled selected={true}  style={{ color : "green" }} /></Option>
             <Option value="Block">Block <CloseCircleFilled  style={{ color : "red" }}/></Option>
          </Select> 
          

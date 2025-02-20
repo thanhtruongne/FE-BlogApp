@@ -133,9 +133,9 @@ $line-height-base: 1.6;
     .night-mode-table-antd ul {
         color:  white !important;
     }
-    .ant-pagination-item {
-        background-color: unset !important;
-    }
+    // .ant-pagination-item {
+    //     background-color: unset !important;
+    // }
     .anticon-close-circle{
         color: white !important;
     }
@@ -150,9 +150,9 @@ $line-height-base: 1.6;
         .icon_suggest{
             color: white !important;
         }
-        .ant-upload-text {
-            color: white !important;
-        }
+        // .ant-upload-text {
+        //     color: white !important;
+        // }
         .upload-img{
             border: 1px solid white !important;
         }
@@ -208,17 +208,17 @@ $line-height-base: 1.6;
         .ant-table-tbody > tr.ant-table-row:hover > td{
             background: #363738 !important;
         }
-        .ant-pagination-item-active a {
-            color: white !important;
-        }
+        // .ant-pagination-item-active a {
+        //     color: white !important;
+        // }
 
-        .ant-select-selector,
-        .ant-pagination-item-active,
-        .ant-pagination-next .ant-pagination-item-link,
-        .ant-pagination-prev .ant-pagination-item-link{
-            background: #363738 !important;
-            color: white !important;
-        }
+        // .ant-select-selector,
+        // .ant-pagination-item-active,
+        // .ant-pagination-next .ant-pagination-item-link,
+        // .ant-pagination-prev .ant-pagination-item-link{
+        //     background: #363738 !important;
+        //     color: white !important;
+        // }
         .input.ant-input{
             background: #363738 !important;
         }
@@ -725,7 +725,7 @@ $hover: #dfe3e9e8;
                 text-align: left;
             }
             .ant-btn:hover {
-                background: #f0f0f0;
+                // background: #f0f0f0;
                 color: unset;
                 border: unset;
             }

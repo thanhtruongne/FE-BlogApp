@@ -29,10 +29,6 @@ const authSlice = createSlice({
     initialState,
     reducers : {
         login: (state,request) => {
-            // state.isAuthenticated = true;
-            // state.isAdmin = request.payload.data.role == constants.ADMIN ? true : false;
-            // state.currentUser = request.payload.data
-
             //lưu token, client-id và refreshToken vào cookie
             console.log(request.payload)
             setTokens(request.payload.tokens.access_token, request.payload.tokens.refresh_token)

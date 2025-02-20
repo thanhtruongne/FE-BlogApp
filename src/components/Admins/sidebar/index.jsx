@@ -1,9 +1,9 @@
 /* eslint-disable */
 
 import { HiX } from "react-icons/hi";
-import Links from "./components/Links";
 import AdminRoute from "../../../Routes/Route/AdminRoute";
 import { logoPNG } from "../../../assets/svg_export";
+import Links from "./components/Links";
 const Sidebar = ({ open, onClose }) => {
   return (
     <div

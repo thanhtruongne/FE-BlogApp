@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../../components/Admins/navbar";
-import Sidebar from "../../components/Admins/sidebar"; 
+import Sidebar from "../../components/Admins/sidebar";
 import AdminRoute from "../../Routes/Route/AdminRoute";
 
 export default function AdminLayouts(props) {

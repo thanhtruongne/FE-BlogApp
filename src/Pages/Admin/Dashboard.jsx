@@ -4,7 +4,7 @@ import { IoDocuments } from "react-icons/io5";
 import { MdBarChart, MdDashboard } from "react-icons/md";
 import Widget from "../../components/Admins/widget/Widget";
 
-const Dashboard = () => {
+const Dashboard = ( ) => {
   return (
     <div>
       <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-6">

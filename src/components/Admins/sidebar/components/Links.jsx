@@ -12,8 +12,12 @@ export function SidebarLinks(props) {
   };
 
   const createLinks = (routes) => {
+    console.log(routes)
     return routes.map((route, index) => {
-
+         if(route?.key){
+            return;
+         }
+              
          return (
           <Link key={index} to={route?.path}>
             <div className="relative mb-3 flex hover:cursor-pointer">
@@ -24,7 +28,7 @@ export function SidebarLinks(props) {
                 <span
                   className={`${
                     activeRoute(route.path) === true
-                      ? "font-bold text-brand-500 dark:text-white"
+                      ? "font-bold text-[#9f224e] dark:text-white"
                       : "font-medium text-gray-600"
                   }`}
                 >
@@ -41,7 +45,7 @@ export function SidebarLinks(props) {
                 </p>
               </li>
               {activeRoute(route.path) ? (
-                <div class="absolute right-0 top-px h-9 w-1p rounded-lg bg-brand-500 dark:bg-brand-400" />
+                <div class="absolute right-0 top-px h-9 w-1p rounded-lg bg-[#9f224e] dark:bg-[#9f224e]" />
               ) : null}
             </div>
           </Link>

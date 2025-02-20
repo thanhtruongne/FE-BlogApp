@@ -1,18 +1,23 @@
 import React from "react";
-import AdminPaths from "../RoutePaths/AdminPaths";
-import Dashboard from "../../Pages/Admin/Dashboard";
 import {
-    MdHome,
-    MdOutlineShoppingCart,
-    MdBarChart,
-    MdPerson,
-    MdLock,
-  } from "react-icons/md";
+  MdHome,
+  MdOutlineFolderCopy,
+  MdOutlinePostAdd,
+  MdPerson
+} from "react-icons/md";
+import BlogPage from "../../Pages/Admin/Blog/Blog.page";
+import TabNavPost from "../../Pages/Admin/Blog/Switch.page";
+import CategoriesPages from "../../Pages/Admin/Categories.pages";
+import Dashboard from "../../Pages/Admin/Dashboard";
 import UserPages from "../../Pages/Admin/User.pages";
+import AdminPaths from "../RoutePaths/AdminPaths";
 
 const AdminRoute = [
     { path: AdminPaths.DASHBOARD, element: <Dashboard /> ,icon :  <MdHome className="h-6 w-6" />,name : 'Thống kê' },
     { path: AdminPaths.MANAGER_USER, element: <UserPages /> ,icon :  <MdPerson className="h-6 w-6" />,name : 'Quản lý người dùng' },
+    { path: AdminPaths.MANAGER_CATEGORIES, element: <CategoriesPages /> ,icon :  <MdOutlineFolderCopy className="h-6 w-6" />, name : 'Quản lý danh mục' },
+    { path: AdminPaths.MANAGER_POST, element: <BlogPage /> ,icon :  <MdOutlinePostAdd  className="h-6 w-6" />,name : 'Quản lý bài viết' },
+    { path: AdminPaths.MANAGER_POST_FORM, element: <TabNavPost /> ,icon :  <MdOutlinePostAdd  className="h-6 w-6" />,name : 'Tạo bài viết', key : true},
 ]
 
 export default AdminRoute

@@ -1,8 +1,8 @@
-import { DownOutlined, ExclamationCircleFilled } from '@ant-design/icons';
-import { Button, Dropdown, Form, Modal, Pagination, Space, Table, Tag } from 'antd';
+import { DownOutlined, ExclamationCircleFilled, PlusOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Form, Image, Modal, Pagination, Space, Table, Tag } from 'antd';
 import { HttpStatusCode } from "axios";
 import React, { useCallback, useEffect, useState } from "react";
-import GeneralAdminApi from '../../apis/admin/General.api';
+import GeneralAdminApi from '../../apis/admin/Users/General.api';
 import showMessage from '../../Helpers/showMessage';
 import FormResourceCreate from './components/FormResourceCreate';
 const UserPages = () => {
@@ -18,6 +18,7 @@ const UserPages = () => {
   const [actionDo , setAction] = useState({ // để mã code hay ký tự cg dc
       block : 'code#blockAcc',
       delete : 'code#remove',
+      create : 'code#create',
       edit : 'code#edit'
   })
   const [loadingModal, setLoadingModal] = useState(false)
@@ -31,21 +32,33 @@ const UserPages = () => {
     _id : '',
     phone : '',
     full_name: '',
+    previewAvatar : '',
+    avatar : ''
   })  
   const [loadingBtn,setLoadingBtn] = useState(false);
-  
-
+  const [titleModal,setTitleModal] = useState('');
+  const [type,setType] = useState({
+    create : 'create###',edit : "edit##form##modal"
+  })
   const {confirm} = Modal;
+  const [optionType,setOptionType] = useState(null);
+
+
+
   const [form] = Form.useForm();
 
-  const showModal = useCallback(async(id) => { 
+  const showModalEdit = useCallback(async(id) => { 
     setOpenModal(!openModal)
     setLoadingModal(!loadingModal)
+    setOptionType(type?.edit)
+    setTitleModal('Chỉnh sửa thông tin')
     try {
       let response = await GeneralAdminApi.getDetailUser(id)
-      if(response?.status == HttpStatusCode.Ok) {
-        setfieldModal(response?.data)
-      }
+        .then(res => {
+          if(res.status == HttpStatusCode.Ok) {
+            setfieldModal(res?.data)
+          }
+        })
     } catch (error) {
       showMessage(error.message,'error');
       
@@ -54,6 +67,8 @@ const UserPages = () => {
 
   },[openModal])
 
+
+  
   const handleCloseModal = () => {
     form.resetFields();
     setOpenModal(!openModal)
@@ -80,30 +95,42 @@ const UserPages = () => {
   },[params])
 
 
-  const handleOptionUser = (type,id,email = null) => {
+  const handleOptionUser = (type,id = null ,email = null) => {
     switch(type) {
         case actionDo.block :
           break;
         case actionDo.delete:
           showDeleteConfirm(email,id); // xóa resource
           break;
+        case actionDo.create:
+          showModalCreate(); // xóa resource
+          break;
         case actionDo.edit : 
-          showModal(id) // mở modal
+          showModalEdit(id) // mở modal
           break;
         default : 
           break; 
     }
   }
 
-  const handleSubmit = async(data) => {
+  const handleSubmit = async(data,optionType) => {
     setLoadingBtn(true)
+    console.log(data,optionType)
     try {
-      const response = await GeneralAdminApi.updateDataUser(data,data?._id)
-      if(response?.status == HttpStatusCode.Ok) {
-        showMessage(response?.message,'success')
+      if(data) {
+        if(optionType == type?.create) {
+          const response = await GeneralAdminApi.storeDataUser(data)
+        } 
+        if(optionType == type?.edit) {
+          const response = await GeneralAdminApi.updateDataUser(data,data?._id)
+        } 
+        if(response?.status == HttpStatusCode.Ok) {
+          showMessage(response?.message,'success')
+        }
         fetchDataUsers()
-        handleCloseModal();
-      } else {
+        handleCloseModal()
+      }
+      else {
         showMessage(response?.message,'error')
       }
     } catch (error) {
@@ -145,11 +172,37 @@ const UserPages = () => {
   };
 
 
+  const showModalCreate = () => {
+    form.resetFields()
+    setfieldModal({ email : '',
+      address : '',
+      password : 'lock',
+      status : 'Active',
+      role : '',
+      _id : '',
+      phone : '',
+      full_name: '',
+      previewAvatar : '',
+      avatar : ''})
+    setOpenModal(true)
+    setOptionType(type?.create)
+    setTitleModal('Tạo thông tin người dùng')
+  }
+
   const tableColumns = [
     {
       title: 'Hình ảnh',
       dataIndex: 'avatar',
-    },
+      key : 'avatar',
+      render : (value) => {
+        return (  
+        <Image
+          width={150}
+          src={value ?? ' '}
+        /> )
+      
+      }
+     },
     {
       title: 'Họ và tên',
       dataIndex: 'full_name',
@@ -199,49 +252,41 @@ const UserPages = () => {
       key: 'action',
       sort  :true,
       render : (record) => {       
-      const itemsAction = [ 
-        {
-          key: '1',
-          danger: true,
-          label : (
-            <a onClick={() => handleOptionUser(actionDo.delete,record._id,record?.email)} rel="noopener noreferrer" href="#">
-              Xóa
-            </a>
-          )
-        },
-        {
-          key: '2',
-          label : (
-            <a target="_blank" rel="noopener noreferrer" href="#">
-            Gửi thông báo
-            </a>
-          )
-        },
-        // {
-        //   key: '3',
-        //   label : (
-        //     <Button onClick={() => handleOptionUser(actionDo.block,record._id)}>
-        //         Khóa
-        //     </Button>
-        //   )
-        // },
-      ]
-      return(
-        <Space size="middle">
-          <Button onClick={() => handleOptionUser(actionDo.edit,record._id)} color='default' type="primary">Chỉnh sửa</Button>
-        <Dropdown
-           menu={{ items: itemsAction }}
-           trigger={["click"]} 
-          >
-            <a onClick={(e) => e.preventDefault()}>
-              <Space>
-                Tùy chọn
-                <DownOutlined />
-              </Space>
-            </a>
-          </Dropdown>
-      </Space>
-      )
+        const itemsAction = [ 
+          {
+            key: '1',
+            danger: true,
+            label : (
+              <a onClick={() => handleOptionUser(actionDo.delete,record._id,record?.email)} rel="noopener noreferrer" href="#">
+                Xóa
+              </a>
+            )
+          },
+          {
+            key: '2',
+            label : (
+              <a target="_blank" rel="noopener noreferrer" href="#">
+              Gửi thông báo
+              </a>
+            )
+          },
+        ]
+        return(
+          <Space size="middle">
+            <Button onClick={() => handleOptionUser(actionDo.edit,record._id)} color='default' type="primary">Chỉnh sửa</Button>
+          <Dropdown
+            menu={{ items: itemsAction }}
+            trigger={["click"]} 
+            >
+              <a onClick={(e) => e.preventDefault()}>
+                <Space>
+                  Tùy chọn
+                  <DownOutlined />
+                </Space>
+              </a>
+            </Dropdown>
+        </Space>
+        )
       }
     }
   ]
@@ -260,6 +305,11 @@ const UserPages = () => {
   return (
     <div>
     <div className="mt-3 grid  gap-5">
+        <div className="text-right">
+          <Button type='primary'  icon={<PlusOutlined /> } onClick={() => handleOptionUser(actionDo?.create)} danger>
+             Thêm mới
+          </Button>
+        </div>
         <div className="!z-5 relative flex flex-col rounded-[20px] bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:shadow-none w-full h-full p-4">       
         <Table
           {...tableProps}
@@ -282,23 +332,23 @@ const UserPages = () => {
         </div>
     </div>
     
-    {/* create edit datas */}
     <Modal
-        title="Chỉnh sửa"
+        title={titleModal}
         open={openModal}
-        // onOk={handleSubmit}
         confirmLoading={loadingModal}
         footer={null}
         onCancel={handleCloseModal}
       >
         <FormResourceCreate 
-         data={fieldModal}
-         handleSubmit={handleSubmit}
-         handleCloseModal={handleCloseModal}
-         loadingBtn={loadingBtn}
+          form={form}
+          type={optionType}
+          data={fieldModal}
+          setData={setfieldModal}
+          handleSubmit={handleSubmit}
+          handleCloseModal={handleCloseModal}
+          loadingBtn={loadingBtn}
         />
     </Modal>
-  
   </div>
   )
    
