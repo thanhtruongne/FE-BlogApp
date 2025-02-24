@@ -80,7 +80,7 @@ const FormResourceCreate = ({data,handleSubmit,handleCloseModal,loadingBtn,setDa
         </Form.Item>
 
         <Form.Item
-        //  name='password'
+         name='password'
          label={'Mật khẩu'}  
         //  rules={[{ required: true, message: 'Mật khẩu không được bỏ trống' }]}
         >

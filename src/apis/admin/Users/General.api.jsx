@@ -1,4 +1,4 @@
-import axiosIntance from '../../../utils/axios'
+import axiosIntance from '../../../utils/axios';
 
 
 class GeneralAdminApi {

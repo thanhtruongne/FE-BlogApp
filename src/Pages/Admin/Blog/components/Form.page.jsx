@@ -75,6 +75,7 @@ const FormBlogPage = () => {
     };
 
     const fetchDataResource = async(payload,id = null) => {
+      setLoadingBtn(true)
       try {
         if(id) {
         
@@ -88,19 +89,17 @@ const FormBlogPage = () => {
             })
         }
       } catch (error) {
-        console.log(error);
         showMessage('Có lỗi xảy ra','error');
-        return;
       }
-       
+      setLoadingBtn(false)
     }
     const handleSubmit = async() => {
-       setLoadingBtn(true)
        try {
             const value = await form.validateFields()
             if(value) {
               value.content = data?.content
               value.thumb = data?.thumb
+              console.log(value,data.thumb)
               fetchDataResource(value,id)
             }
                
@@ -109,14 +108,7 @@ const FormBlogPage = () => {
             console.log('Error',error)
             showMessage(error.message,'error') 
         }   
-        setLoadingBtn(false)
-    };
-    const normFile = (e) => {
-      console.log('Upload event:', e);
-      if (Array.isArray(e)) {
-        return e;
-      }
-      return e?.fileList;
+      
     };
       
     return  (
@@ -125,16 +117,11 @@ const FormBlogPage = () => {
             <Form
                 {...formItemLayout}
                 form={form}
-                name='form-upsert-blog-data'
+                // name='form-upsert-blog-data'
                 className='w-full'
                 onFinish={handleSubmit}
-                initialValues={{
-                    // residence: ['zhejiang', 'hangzhou', 'xihu'],
-                    // prefix: '86',
-                }}
-                // style={{
-                //     maxWidth: 600,
-                // }}
+                  // layout="vertical" 
+                autoComplete="off"
                 scrollToFirstError
             >
           <div className="flex">
@@ -174,6 +161,7 @@ const FormBlogPage = () => {
                     <CkEditorComponent 
                       content={data?.content} 
                       name="content"
+                      data={data}
                       setData={setData}
                     />
 
@@ -184,12 +172,20 @@ const FormBlogPage = () => {
 
             <div className="w-[40%]">
                   {/* Upload */}
-                  <UploadThumbData 
-                      name="thumb"
-                      data={data}
-                      label={"Hình ảnh"}
-                      setData={setData}
-                   />
+                  <Form.Item
+                    name="thumb"
+                    label="Hình ảnh"
+                    rules={[{required : true, message : "Hình ảnh không được bỏ trống"}]}
+                  >
+                    <UploadThumbData 
+                        name="thumb"
+                        data={data}
+                        label={"Hình ảnh"}
+                        setData={setData}
+                        form={form}
+                    />
+
+                  </Form.Item>
 
                   {/* Categories */}
                   <TreeSelect 

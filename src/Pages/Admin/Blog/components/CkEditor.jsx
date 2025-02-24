@@ -3,7 +3,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Form } from "antd";
 
-const CkEditorComponent = ({content,name,setData}) => {
+const CkEditorComponent = ({content,name,setData,data}) => {
   return(
     <Form.Item
       name="content"
@@ -18,7 +18,7 @@ const CkEditorComponent = ({content,name,setData}) => {
           data={content}
           onChange={(event, editor) => {
               const data = editor.getData();
-              setData({content : data});
+              setData({...data,content : data});
           }}
           
       />

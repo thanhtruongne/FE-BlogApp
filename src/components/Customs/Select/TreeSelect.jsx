@@ -1,7 +1,20 @@
 import { Form, TreeSelect } from 'antd';
 import React from 'react';
 
-const TreeSelectCustom = ({name,label,value,data,className,placeHolder = "Chọn dữ liệu",rules = [{required: true, message: 'Danh mục không được bỏ trống',}]}) => {
+const TreeSelectCustom = (
+    {
+        name,
+        label,
+        value,
+        data,
+        className,
+        placeHolder = "Chọn dữ liệu",
+        rules = [{required: true, message: 'Danh mục không được bỏ trống',}],
+        isMultiple = false,
+        isCheckable = false
+    
+    }
+) => {
   return (
     <Form.Item
         name={name}
@@ -10,10 +23,7 @@ const TreeSelectCustom = ({name,label,value,data,className,placeHolder = "Chọn
         className={className}
     >
         <TreeSelect
-            className='w-full'
-            style={{
-                width: '100%',
-            }}
+            
             value={value}
             dropdownStyle={{
                 maxHeight: 400,
@@ -25,6 +35,8 @@ const TreeSelectCustom = ({name,label,value,data,className,placeHolder = "Chọn
             allowClear
             placeholder={placeHolder}
             treeDefaultExpandAll
+            multiple={isMultiple}
+            treeCheckable={isCheckable}
         />
         
     </Form.Item>

@@ -120,13 +120,20 @@ const UserPages = () => {
       if(data) {
         if(optionType == type?.create) {
           const response = await GeneralAdminApi.storeDataUser(data)
+          .then(res => {
+            if(res.status == HttpStatusCode.Ok) {
+              showMessage(response?.message,'success')
+            }
+          })
         } 
         if(optionType == type?.edit) {
           const response = await GeneralAdminApi.updateDataUser(data,data?._id)
+          .then(res => {
+            if(res.status == HttpStatusCode.Ok) {
+              showMessage(response?.message,'success')
+            }
+          })
         } 
-        if(response?.status == HttpStatusCode.Ok) {
-          showMessage(response?.message,'success')
-        }
         fetchDataUsers()
         handleCloseModal()
       }
