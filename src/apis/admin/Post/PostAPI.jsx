@@ -7,7 +7,7 @@ class PostAPI {
         console.log(payload)
         return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/store', payload,{
             headers: {
-                "content-type": 'multipart/form-data'
+                "Content-Type": 'multipart/form-data'
             }
         })
     }
@@ -18,6 +18,15 @@ class PostAPI {
 
     async searchingDataResource(payload) {
         return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/searchingData', payload)
+    }
+
+    async fetchGetDataDetail(id) {
+        return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/detail/' + id);
+    }
+
+
+    async fetchUpdateDataResource(id,payload) {
+        return await axiosIntance.put(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/update/' + id, payload);
     }
 
     // async fetchDataTreeCate() {

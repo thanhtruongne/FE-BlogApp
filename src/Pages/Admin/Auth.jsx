@@ -52,6 +52,7 @@ const  AuthLoginSystem = () => {
     const values = await form.validateFields();
     if(values) {
        try {
+        values.system = true
         const res = await AuthencationApi.loginAdminSystem(values);
         console.log(res)
         if(res?.status != HttpStatusCode.Ok) {
@@ -105,9 +106,7 @@ const  AuthLoginSystem = () => {
                          }}
                        >
                        
-                        <div className="account-login bg-[#e6e6e6] w-full rounded-[10px] flex items-center flex-col" style={{ padding:'24px 30px 28px' }}>
-
-                       
+                        <div className="account-login bg-[#e6e6e6] w-full rounded-[10px]" style={{ padding:'24px 30px 28px' }}>
                           <Form.Item
                               name='email'
                               rules={[
@@ -120,7 +119,7 @@ const  AuthLoginSystem = () => {
                               <Input
     
                                   autoComplete="off"
-                                  className='w-100 border-bottom'
+                                  className='border-bottom'
                                   prefix={<UserOutlined />}
                               />
                           </Form.Item>
@@ -139,21 +138,21 @@ const  AuthLoginSystem = () => {
 
                                   autoComplete="off"
                                   prefix={<KeyOutlined />}
-                                  className='w-100 border-bottom'
+                                  className='border-bottom'
                                   // placeholder={'Password'}
                               />
                           </Form.Item>
 
-                          <Form.Item
+                          {/* <Form.Item
                           name='system'
                           >
                             <Input type="hidden" defaultValue={true}/>
                           </Form.Item>
-
+ */}
 
                             <Button     
                                 loading={loadingBtn}
-                                className='text-uppercase mt-2'
+                                className='text-uppercase mt-2 text-center'
                                 type='primary'
                                 icon={<LoginOutlined size='large' />}
                                 htmlType='submit'

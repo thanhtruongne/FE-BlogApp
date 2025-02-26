@@ -3,7 +3,7 @@ import { Button, DatePicker, Form, Input, Select } from "antd";
 import { useState } from "react";
 import showMessage from "../../../../Helpers/showMessage";
 import TreeSelectCustom from "../../../../components/Customs/Select/TreeSelect";
-const {Option} = Select
+const { RangePicker } = DatePicker;
 
 const FormSearchingData = ({setData,dataForm,setDataForm,className,fetchData}) => {
    const [form] = Form.useForm();
@@ -17,8 +17,18 @@ const FormSearchingData = ({setData,dataForm,setDataForm,className,fetchData}) =
           const values = form.getFieldsValue();
           console.log(values)
           if(values) {
-            if(values.dateTime) {
-                values.dateTime = values.dateTime.format("YYYY-MM-DD")
+            if(values.dateTime && values.dateTime.length > 0) {
+                if(values?.dateTime[1]) {
+                    if( values?.dateTime[1].isBefore(values.dateTime[0])) {
+                        showMessage('Ngày kết thúc phải lớn hơn ngày bắt đầu!','error');
+                        return;
+                    }
+                }
+                values.createAt = {
+                    gte :values.dateTime[0].format("DD-MM-YYYY"),
+                    lte : values.dateTime[1].format("DD-MM-YYYY")
+                }
+                delete values.dateTime
             }
             fetchData(values)
           }
@@ -95,9 +105,11 @@ const FormSearchingData = ({setData,dataForm,setDataForm,className,fetchData}) =
         </Form.Item>
 
         <Form.Item name="dateTime" className='py-2'>
-            <DatePicker 
-                placeholder="Thời gian tạo tin"
+            <RangePicker 
+                format="DD-MM-YYYY"
+                placeholder={["Thời gian bắt đầu","Thời gian sau"]}
                 allowClear
+                allowEmpty={[false,true]}
             // onChange={(date, dateString) => setDataForm({...dataForm,dateTime : })}
              />
         </Form.Item>

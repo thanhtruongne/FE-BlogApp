@@ -5,4 +5,5 @@ export default {
     MANAGER_CATEGORIES : '/system/manager-categories',
     MANAGER_POST : '/system/blog',
     MANAGER_POST_FORM : '/system/blog/form',
+    MANAGER_POST_FORM_DETAIL : '/system/blog/form/:id',
 }

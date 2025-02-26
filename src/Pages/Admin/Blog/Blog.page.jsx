@@ -1,5 +1,5 @@
 
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { DownOutlined, PlusOutlined, StockOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Image, Space, Table, Tag } from 'antd';
 import { HttpStatusCode } from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -19,7 +19,7 @@ const BlogPage = () => {
     const columns = [
         {
           title: 'Hình ảnh',
-          dataIndex: 'thumb',
+          dataIndex: 'imageURL',
           render : (record) =>{
             if (record) {
               return (
@@ -35,7 +35,11 @@ const BlogPage = () => {
         },
         {
           title: 'Title',
-          dataIndex: 'title',
+          render : (record) => 
+            <>
+            {<a onClick={() => navigate(AdminPaths.MANAGER_POST_FORM + '/' + record?._id)}>{record.title}</a>} {record.isTrending && <StockOutlined style={{ fontSize : 25,color : 'green' }} />}
+        </>
+          
         },
         {
           title: 'Danh mục',
@@ -187,11 +191,11 @@ const BlogPage = () => {
                     columns={columns}
                     dataSource={dataSource}
                     pagination={{
-                        pageSize: 50,
+                        pageSize: 10,
                     }}
-                    scroll={{
-                        y: 55 * 5,
-                    }}
+                    // scroll={{
+                    //     y: 55 * 5,
+                    // }}
                 />
             </div>
         </div>

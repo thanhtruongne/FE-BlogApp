@@ -203,7 +203,7 @@ const CategoriesPages = () => {
                     rowKey={(record) => record.value}
                     columns={columns}
                     pagination={false}
-                    dataSource={dataTree}
+                    dataSource={dataTree ?? []}
                     size="middle"
                 />
                 {/* <Pagination 

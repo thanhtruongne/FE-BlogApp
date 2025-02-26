@@ -17,7 +17,8 @@ const AdminRoute = [
     { path: AdminPaths.MANAGER_USER, element: <UserPages /> ,icon :  <MdPerson className="h-6 w-6" />,name : 'Quản lý người dùng' },
     { path: AdminPaths.MANAGER_CATEGORIES, element: <CategoriesPages /> ,icon :  <MdOutlineFolderCopy className="h-6 w-6" />, name : 'Quản lý danh mục' },
     { path: AdminPaths.MANAGER_POST, element: <BlogPage /> ,icon :  <MdOutlinePostAdd  className="h-6 w-6" />,name : 'Quản lý bài viết' },
-    { path: AdminPaths.MANAGER_POST_FORM, element: <TabNavPost /> ,icon :  <MdOutlinePostAdd  className="h-6 w-6" />,name : 'Tạo bài viết', key : true},
+    { path: AdminPaths.MANAGER_POST_FORM, element: <TabNavPost /> ,icon :  <MdOutlinePostAdd  className="h-6 w-6" />,name : 'Bài viết', key : true},
+    { path: AdminPaths.MANAGER_POST_FORM_DETAIL, element: <TabNavPost /> ,icon :  <MdOutlinePostAdd  className="h-6 w-6" />,name : 'Chỉnh sửa bài viết', key : true},
 ]
 
 export default AdminRoute

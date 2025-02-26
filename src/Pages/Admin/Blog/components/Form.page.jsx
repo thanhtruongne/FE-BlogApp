@@ -1,5 +1,5 @@
 
-import { Button, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input } from 'antd';
 import { HttpStatusCode } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -10,6 +10,7 @@ import showMessage from '../../../../Helpers/showMessage';
 import AdminPaths from '../../../../Routes/RoutePaths/AdminPaths';
 import CkEditorComponent from './CkEditor';
 import UploadThumbData from './Upload';
+import UploadMultiple from './UploadMultiple';
 
 const FormBlogPage = () => {
     const [form] = Form.useForm();
@@ -21,7 +22,7 @@ const FormBlogPage = () => {
   
       const fetchDataTree = async() => {
         try {
-          const response = await CategoriesAPI.fetchDataTreeCate()
+           await CategoriesAPI.fetchDataTreeCate()
           .then(res => {
              if(res.status == HttpStatusCode.Ok) {
               setTreeData(res.data)
@@ -34,16 +35,31 @@ const FormBlogPage = () => {
         }
       }
 
+    const fetchDetailResouce = async(id) => {
+      try {
+           await PostAPI.fetchGetDataDetail(id)
+           .then(res => {
+              if(res.status == HttpStatusCode.Ok) {
+                setData(res.data)
+                form.setFieldsValue(res.data)
+              }
+           })
+      } catch (error) {
+        showMessage('Có lỗi xảy ra','error');
+        return;
+      }
+    }
+      
     useEffect(() => {
       fetchDataTree();
     },[])
 
     useEffect(() => {
-          console.log(id)
+      fetchDetailResouce(id)
     },[id])
 
     const { TextArea } = Input;
-    const formItemLayout = {
+    const formItemLayout = {  
         labelCol: {
           xs: {
             span: 12,
@@ -78,7 +94,13 @@ const FormBlogPage = () => {
       setLoadingBtn(true)
       try {
         if(id) {
-        
+          await PostAPI.fetchUpdateDataResource(id,payload)
+          .then(res => {
+            if(res.status == HttpStatusCode.Ok) {
+                window.location.reload();
+                showMessage(res.message,'success');
+            }
+          })
         } 
         else {
            await PostAPI.fetchStoreResourceData(payload)
@@ -93,17 +115,31 @@ const FormBlogPage = () => {
       }
       setLoadingBtn(false)
     }
+
+    const handleChangeCheckbox = (e) => {
+      console.log(e.target.checked);
+        setData((prev) => ({...prev,isTrending : e.target.checked}))
+    }
+
+
     const handleSubmit = async() => {
-       try {
+       try {  
             const value = await form.validateFields()
             if(value) {
               value.content = data?.content
-              value.thumb = data?.thumb
-              console.log(value,data.thumb)
-              fetchDataResource(value,id)
-            }
-               
-                   
+              value.isTrending = data.isTrending ?? false
+              const formData = new FormData();
+              Object.keys(value).forEach((key) => {
+                formData.append(key, value[key]);
+              });
+              const images = data?.images || [];
+              images.forEach((image) => {
+                formData.append('images', image);
+              });
+
+              console.log(formData.entries(),value)
+              // fetchDataResource(formData,id)
+            }    
         } catch (error) {
             console.log('Error',error)
             showMessage(error.message,'error') 
@@ -125,7 +161,7 @@ const FormBlogPage = () => {
                 scrollToFirstError
             >
           <div className="flex">
-            <div className="w-[60%]">
+            <div className="w-[50%]">
                   <Form.Item
                       name="title"
                       label="Tiêu đề"
@@ -157,30 +193,39 @@ const FormBlogPage = () => {
                   >
                       <TextArea rows={4} />
                   </Form.Item>
-
-                    <CkEditorComponent 
-                      content={data?.content} 
-                      name="content"
-                      data={data}
-                      setData={setData}
-                    />
-
-
-                
-            
             </div>
 
-            <div className="w-[40%]">
+            <div className="w-[50%]">
                   {/* Upload */}
                   <Form.Item
                     name="thumb"
-                    label="Hình ảnh"
-                    rules={[{required : true, message : "Hình ảnh không được bỏ trống"}]}
+                    label="Thumbnail"
+                    className='pr-3'
+                    rules={[
+                      {
+                          required: true,
+                          message: 'Thumbnail thiệu không được bỏ trống',
+                      },
+                      ]}
                   >
                     <UploadThumbData 
                         name="thumb"
                         data={data}
-                        label={"Hình ảnh"}
+                        label={"Thumbnail"}
+                        setData={setData}
+                        form={form}
+                    />
+
+                  </Form.Item>
+
+                  <Form.Item
+                    name="images"
+                    label="Hình ảnh"
+                    // rules={[{required : true, message : "Hình ảnh không được bỏ trống"}]}
+                  >
+                    <UploadMultiple 
+                        name="images"
+                        data={data}
                         setData={setData}
                         form={form}
                     />
@@ -205,9 +250,30 @@ const FormBlogPage = () => {
 
                   />
 
+                  <Form.Item
+                     className='pl-3'
+                     label="Tin xu hướng"
+                     name='isTrending'
+                  > 
+                    <Checkbox 
+                        onChange={handleChangeCheckbox}
+                        // name='isTrending'
+                        checked={data?.isTrending ?? false}
+                    />
+                  </Form.Item>
+
 
             </div>  
+           
 
+          </div>
+          <div className="w-full mt-5"> 
+              <CkEditorComponent 
+                content={data?.content} 
+                name="content"
+                data={data}
+                setData={setData}
+              />
           </div>
                 <Form.Item {...tailFormItemLayout} className='py-[40px]'>
                   <Button  loading={loadingBtn} type="primary" className='ml-6' htmlType="submit">

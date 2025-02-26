@@ -811,28 +811,28 @@ button{
 //Antd picker calendar
 
 .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner {
-    background: var(--primary-color) !important;
+    background:#9f224e !important;
 }
 
 .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
-    background: var(--primary-color) !important;
+    background:#9f224e !important;
 }
 
 .ant-picker-cell-in-view.ant-picker-cell-today
 .ant-picker-cell-inner::before {
-    border-color: var(--border-btn) !important;
-    color: var(--color-btn) !important;
+    border-color: #9f224e !important;
+    color: #333 !important;
 
 }
 
-.ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single)::before,
-.ant-picker-cell-in-view.ant-picker-cell-in-range::before,
-.ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before,
-.ant-picker-time-panel-column
-> li.ant-picker-time-panel-cell-selected
-.ant-picker-time-panel-cell-inner {
-    background: var(--box-shadow) !important;
-}
+// .ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-range-start-single)::before,
+// .ant-picker-cell-in-view.ant-picker-cell-in-range::before,
+// .ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before,
+// .ant-picker-time-panel-column
+// > li.ant-picker-time-panel-cell-selected
+// .ant-picker-time-panel-cell-inner {
+//     background: var(--box-shadow) !important;
+// }
 
 
 // Color Card Description
@@ -854,7 +854,7 @@ button{
 //     border-color: var(--border-color) !important
 // }
 
-.ant-picker-outlined:hover,
+// .ant-picker-outlined:hover,
 .ant-input-outlined:hover{
     box-shadow: none;
     background-color: #ffffff;

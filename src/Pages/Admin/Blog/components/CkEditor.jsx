@@ -18,7 +18,7 @@ const CkEditorComponent = ({content,name,setData,data}) => {
           data={content}
           onChange={(event, editor) => {
               const data = editor.getData();
-              setData({...data,content : data});
+              setData((prev) => ({...prev,content : data}));
           }}
           
       />
