@@ -2,6 +2,7 @@
 import { Button, Modal, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useEffect, useState } from 'react';
+import { convertStringToSlug } from "../../../utils/constants";
 
 
 
@@ -14,9 +15,9 @@ import { useEffect, useState } from 'react';
         setFileList([
           {
             uid: "-1",
-            name: "avatar",
+            name: convertStringToSlug(data?.full_name ?? data?.title),
             status: "done",
-            url: typeof data.avatar === "string" ? data.avatar : URL.createObjectURL(data.avatar),
+            url: typeof data.imageURL === "string" ? data.imageURL : URL.createObjectURL(data.avatar),
           },
         ]);
       } else {
@@ -31,7 +32,6 @@ import { useEffect, useState } from 'react';
         const imageUrl = URL.createObjectURL(file);
         setData({ ...data,avatar : file }); 
         setPreviewImage(imageUrl);
-        console.log(newFileList)
       }
     }
 
@@ -47,7 +47,7 @@ import { useEffect, useState } from 'react';
     };
 
     return (
-      <div className="">
+      <>
 
       
       <ImgCrop rotationSlider>
@@ -74,7 +74,7 @@ import { useEffect, useState } from 'react';
         <Modal open={previewVisible} footer={null} onCancel={() => setPreviewVisible(false)}>
           <img alt="avatar preview" style={{ width: "100%" }} src={previewImage} />
         </Modal>
-  </div>
+  </>
     );
   };
 

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
     const UploadThumbData = (
         {
           data,
+          dataForm,
           setData,
           name,
           label,
@@ -17,30 +18,25 @@ import React, { useEffect, useState } from "react";
       
 
       useEffect(() => {
-         if(data?.imageURL) {
+         if(dataForm?.imageURL) {
           setFileList([
             {
               uid: "-1",
               name: "thumbnail.jpg",
               status: "done",
-              url: data.imageURL, 
+              url: dataForm.imageURL, 
             },
           ]);
          }
-      },[data?.imageURL])
-
-
-
-
+      },[dataForm?.imageURL])
 
 
       const handleChange = ({ fileList: newFileList }) => {
         setFileList(newFileList); // Giữ lại duy nhất 1 file
         if (newFileList) {
-          const file = newFileList[0].originFileObj;
+          const file = newFileList[0].originFileObj || newFileList[0].url;
           setData((prev) => ({...prev,thumb : file})); 
           form.setFieldValue(name, file);
-          console.log(data);
         }
       };
       const handlePreview = async (file) => {

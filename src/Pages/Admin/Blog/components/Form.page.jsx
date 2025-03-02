@@ -8,6 +8,7 @@ import PostAPI from '../../../../apis/admin/Post/PostAPI';
 import { StatusSelect, TreeSelect } from '../../../../components/Customs/Select';
 import showMessage from '../../../../Helpers/showMessage';
 import AdminPaths from '../../../../Routes/RoutePaths/AdminPaths';
+import constants from '../../../../utils/constants';
 import CkEditorComponent from './CkEditor';
 import UploadThumbData from './Upload';
 import UploadMultiple from './UploadMultiple';
@@ -15,8 +16,14 @@ import UploadMultiple from './UploadMultiple';
 const FormBlogPage = () => {
     const [form] = Form.useForm();
     const [data,setData] = useState({})
+    const [dataForm,setDataForm] = useState({});
     const [treeData,setTreeData] = useState([]);
     const [loadingBtn,setLoadingBtn] = useState(false)
+    const [isTrending, setIsTrending] = useState(dataForm?.isTrending ?? false);
+    
+    const [opentAvatar,setAvatar] = useState(false);
+
+
     const navigate = useNavigate();
     const {id} = useParams();
   
@@ -28,7 +35,7 @@ const FormBlogPage = () => {
               setTreeData(res.data)
              }
           })
-        } catch (error) {
+        } catch (error) { 
           console.log(error);
           showMessage('Có lỗi xảy ra','error');
           return;
@@ -40,7 +47,8 @@ const FormBlogPage = () => {
            await PostAPI.fetchGetDataDetail(id)
            .then(res => {
               if(res.status == HttpStatusCode.Ok) {
-                setData(res.data)
+                setDataForm(res.data)
+                setIsTrending(res.data.isTrending)
                 form.setFieldsValue(res.data)
               }
            })
@@ -51,11 +59,15 @@ const FormBlogPage = () => {
     }
       
     useEffect(() => {
+      console.log("fetchDataTree running");
       fetchDataTree();
     },[])
 
     useEffect(() => {
-      fetchDetailResouce(id)
+      if(id) {
+        fetchDetailResouce(id)
+      }
+     
     },[id])
 
     const { TextArea } = Input;
@@ -117,8 +129,9 @@ const FormBlogPage = () => {
     }
 
     const handleChangeCheckbox = (e) => {
+      setIsTrending(e.target.checked);
       console.log(e.target.checked);
-        setData((prev) => ({...prev,isTrending : e.target.checked}))
+      setData((prev) => ({...prev,isTrending : e.target.checked}))
     }
 
 
@@ -133,10 +146,11 @@ const FormBlogPage = () => {
                 formData.append(key, value[key]);
               });
               const images = data?.images || [];
+              console.log(images,data);
               images.forEach((image) => {
                 formData.append('images', image);
               });
-
+             
               console.log(formData.entries(),value)
               // fetchDataResource(formData,id)
             }    
@@ -146,6 +160,12 @@ const FormBlogPage = () => {
         }   
       
     };
+
+    const handleOnChangeTreeSelect = (data) => {
+        if(typeof data == 'string' && data.includes(constants.GOC_NHIN_SLUG)) {
+          setAvatar(true);
+        }
+    }
       
     return  (
       <div className="">
@@ -214,6 +234,8 @@ const FormBlogPage = () => {
                         label={"Thumbnail"}
                         setData={setData}
                         form={form}
+                        dataForm={dataForm}
+                        setDataForm={setDataForm}
                     />
 
                   </Form.Item>
@@ -228,6 +250,8 @@ const FormBlogPage = () => {
                         data={data}
                         setData={setData}
                         form={form}
+                        dataForm={dataForm}
+                        setDataForm={setDataForm}
                     />
 
                   </Form.Item>
@@ -235,17 +259,18 @@ const FormBlogPage = () => {
                   {/* Categories */}
                   <TreeSelect 
                       name="categories_id"
-                      value={data?.categories_id}
+                      value={dataForm?.categories_id}
                       placeHolder='Chọn danh mục'
                       data={treeData}
                       label={"Danh mục"}
                       className="mt-8"
+                      handleOnChange={handleOnChangeTreeSelect}
                   />
                   {/* status */}
                   <StatusSelect
                      name="status"
                      label="Trạng thái"
-                     value={data?.status}
+                     value={dataForm?.status}
                      className="mt-8"
 
                   />
@@ -258,7 +283,7 @@ const FormBlogPage = () => {
                     <Checkbox 
                         onChange={handleChangeCheckbox}
                         // name='isTrending'
-                        checked={data?.isTrending ?? false}
+                        checked={isTrending}
                     />
                   </Form.Item>
 
@@ -269,7 +294,7 @@ const FormBlogPage = () => {
           </div>
           <div className="w-full mt-5"> 
               <CkEditorComponent 
-                content={data?.content} 
+                content={dataForm?.content} 
                 name="content"
                 data={data}
                 setData={setData}

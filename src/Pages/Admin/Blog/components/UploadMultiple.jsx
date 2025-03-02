@@ -3,7 +3,8 @@ import { Button, Modal, Upload } from "antd";
 import React, { useEffect, useState } from "react";
   const UploadMultiple = (
       {
-        data,
+        dataForm,
+        setDataForm,
         setData,
         name,
         form
@@ -15,29 +16,33 @@ import React, { useEffect, useState } from "react";
     
 
     useEffect(() => {
-      if(data?.multipleImageURL) {
-        const files = data.multipleImageURL.map((url, index) => ({
+      console.log(dataForm.multipleImageURL,'multipleImageURL');
+      if(dataForm?.multipleImageURL &&  dataForm?.multipleImageURL[0] != undefined) {
+        const files = dataForm.multipleImageURL.map((url, index) => ({
             uid: `-${index}`,
             name: `image-${index}.jpg`,
             status: "done",
             url,
+            val : dataForm?.images[index]
           }));
-
+       
         setFileList(files)  
       }
-    },[data?.multipleImageURL])
+    },[dataForm])
 
 
 
 
     const handleChange = ({ fileList }) => {
+      console.log(fileList,'handleChnage')
       setFileList(fileList); // Giữ lại duy nhất 1 file
       if (fileList.length > 0) {
-        const files = fileList.map(item => item.originFileObj)
+        const files = fileList.map(item => item.originFileObj || item.val)
         setData((prev) => ({...prev,images : files})); 
         form.setFieldValue(name, files);
       }
     };
+    
     const handlePreview = async (file) => {
       if (file.url) {
         setPreviewImage(file.url);
@@ -63,6 +68,7 @@ import React, { useEffect, useState } from "react";
                   onSuccess("ok"); 
                 }, 300);
               }}
+              // onRemove={handleRemove}
               onPreview={handlePreview}
               onChange={handleChange}
             >

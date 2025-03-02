@@ -34,6 +34,7 @@
     "react-router-dom": "^7.1.1",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
+    "slugify": "^1.6.6",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-rtl": "^0.9.0"
   },
