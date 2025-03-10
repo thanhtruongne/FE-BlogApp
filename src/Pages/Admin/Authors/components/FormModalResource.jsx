@@ -53,6 +53,7 @@ const FormModalResource = ({data,handleSubmit,handleCloseModal,loadingBtn,setDat
         >
             <UploadAvatarResource
               data={data}
+              name={'avatar'}
               setData={setData}
             />
         </Form.Item>  

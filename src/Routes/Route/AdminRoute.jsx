@@ -4,6 +4,7 @@ import {
   MdManageAccounts,
   MdOutlineFolderCopy,
   MdOutlinePostAdd,
+  MdOutlineSettings,
   MdPerson
 } from "react-icons/md";
 import TabNavAuthor from "../../Pages/Admin/Authors/tabnav.page";
@@ -11,6 +12,7 @@ import BlogPage from "../../Pages/Admin/Blog/Blog.page";
 import TabNavPost from "../../Pages/Admin/Blog/Switch.page";
 import CategoriesPages from "../../Pages/Admin/Categories.pages";
 import Dashboard from "../../Pages/Admin/Dashboard";
+import SettingPages from "../../Pages/Admin/Setting";
 import UserPages from "../../Pages/Admin/User.pages";
 import AdminPaths from "../RoutePaths/AdminPaths";
 
@@ -22,6 +24,7 @@ const AdminRoute = [
     { path: AdminPaths.MANAGER_POST_FORM, element: <TabNavPost /> ,icon :  <MdOutlinePostAdd  className="h-6 w-6" />,name : 'Bài viết', key : true},
     { path: AdminPaths.MANAGER_POST_FORM_DETAIL, element: <TabNavPost /> ,icon :  <MdOutlinePostAdd  className="h-6 w-6" />,name : 'Chỉnh sửa bài viết', key : true},
     { path: AdminPaths.MANAGER_AUTHOR_DETAIL, element: <TabNavAuthor /> ,icon :  <MdManageAccounts   className="h-6 w-6" />,name : 'Quản lý tác giả'},
+    { path: AdminPaths.MANAGER_SETTING, element: <SettingPages />  ,icon :  <MdOutlineSettings    className="h-6 w-6" />, name : 'Cài đặt'},
 ]
 
 export default AdminRoute

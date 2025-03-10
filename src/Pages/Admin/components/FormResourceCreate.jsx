@@ -47,6 +47,7 @@ const FormResourceCreate = ({data,handleSubmit,handleCloseModal,loadingBtn,setDa
         >
             <UploadAvatarResource
               data={data}
+              name='avatar'
               setData={setData}
             />
             {/* <input type="file" name='avatar' value={data?.avatar} /> */}

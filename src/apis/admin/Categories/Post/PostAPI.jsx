@@ -1,4 +1,4 @@
-import axiosIntance from '../../../utils/axios';
+import axiosIntance from '../../../../utils/axios';
 
 
 class PostAPI {
@@ -12,13 +12,13 @@ class PostAPI {
         })
     }
 
-    async fetchGetAllData(params) {
-        return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/getData',params)
+    async fetchGetAllData(payload) {
+        return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/getData',payload)
     }
 
-    async searchingDataResource(payload) {
-        return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/searchingData', payload)
-    }
+    // async searchingDataResource(payload) {
+    //     return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/searchingData', payload)
+    // }
 
     async fetchGetDataDetail(id) {
         return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/detail/' + id);
@@ -26,6 +26,7 @@ class PostAPI {
 
 
     async fetchUpdateDataResource(id,payload) {
+        console.log(payload);
         return await axiosIntance.put(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/update/' + id, payload);
     }
 

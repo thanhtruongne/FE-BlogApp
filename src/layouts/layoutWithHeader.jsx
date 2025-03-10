@@ -1,6 +1,4 @@
 import { Layout } from "antd"
-import { useContext } from "react"
-import headerVertical from "./components/headerVertical"
 import { Outlet } from "react-router-dom"
 
 
@@ -13,6 +11,7 @@ const LayoutWithHeader = () => {
                 hasLeftMenu={false}
                 items={items}
             />
+            
             <div className='p-2'>
                 <Outlet/>
             </div>

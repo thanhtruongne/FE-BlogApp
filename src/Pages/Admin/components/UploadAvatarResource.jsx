@@ -1,4 +1,4 @@
-  import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useEffect, useState } from 'react';
@@ -6,7 +6,7 @@ import { convertStringToSlug } from "../../../utils/constants";
 
 
 
-  const UploadAvatarResource = ({ data, setData }) => {
+  const UploadAvatarResource = ({ data, setData, name, form }) => {
     const [fileList, setFileList] = useState([]);
     const [previewImage, setPreviewImage] = useState("");
     const [previewVisible, setPreviewVisible] = useState(false);
@@ -15,23 +15,36 @@ import { convertStringToSlug } from "../../../utils/constants";
         setFileList([
           {
             uid: "-1",
-            name: convertStringToSlug(data?.full_name ?? data?.title),
+            name: convertStringToSlug(data?.full_name ?? (data?.title ?? data?.avatar.name)),
             status: "done",
             url: typeof data.imageURL === "string" ? data.imageURL : URL.createObjectURL(data.avatar),
           },
         ]);
-      } else {
+      } 
+      else if(data.logoURL && data.logoURL != '') {
+        setFileList([
+          {
+            uid: "-1",
+            name: 'Hình logo',
+            status: "done",
+            url: data?.logoURL &&  typeof data.logoURL === "string" ? data.logoURL  : null,
+          },
+        ]);
+      }
+      else {
         setFileList([]);
       }
     }, [data]);
 
     const handleChange = ({ fileList: newFileList }) => {
       setFileList(newFileList);
+      console.log(newFileList,'newFileList')
       if (newFileList.length > 0) {
         const file = newFileList[0].originFileObj;
         const imageUrl = URL.createObjectURL(file);
         setData({ ...data,avatar : file }); 
         setPreviewImage(imageUrl);
+        form.setFieldValue(name, file);
       }
     }
 
@@ -45,14 +58,22 @@ import { convertStringToSlug } from "../../../utils/constants";
       }
       setPreviewVisible(true);
     };
-
+    useEffect(() => {
+      return () => {
+        fileList.forEach(file => {
+          if (file.url?.startsWith("blob:")) {
+            URL.revokeObjectURL(file.url);
+          }
+        });
+      };  
+    }, [fileList]);
     return (
       <>
 
       
       <ImgCrop rotationSlider>
         <Upload
-          name="avatar"
+          name={name}
           accept="image/*"
           fileList={fileList}
           action={null}

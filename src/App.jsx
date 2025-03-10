@@ -14,20 +14,6 @@ import AdminPaths from './Routes/RoutePaths/AdminPaths';
 
 function App() {
   const router = createBrowserRouter([
-    {
-      path:'/',
-      element: <Navigate to={GeneralPaths.HOMEPAGE} replace/>,
-    },
-    // 404
-    {
-      path :  GeneralPaths.NOTFOUND,
-      element : <Error404 />
-    },
-    {
-      element : <UserLayouts />,
-      children : UserRoute 
-    },
- 
      //admin
     {
       path : AdminPaths.LOGIN,
@@ -43,7 +29,20 @@ function App() {
          )
        ,
       children : AdminRoute
-    }
+    },
+    {
+      path:'/',
+      element: <Navigate to={GeneralPaths.HOMEPAGE} replace/>,
+    },
+    // 404
+    {
+      path :  GeneralPaths.NOTFOUND,
+      element : <Error404 />
+    },
+    {
+      element : <UserLayouts />,
+      children : UserRoute 
+    },
   ])
 
 

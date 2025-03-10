@@ -4,8 +4,9 @@ import { Button, Dropdown, Image, Space, Table, Tag } from 'antd';
 import { HttpStatusCode } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AuthorAPI from '../../../apis/admin/Authors/AuthorAPI';
 import CategoriesAPI from '../../../apis/admin/Categories/CategoriesAPI';
-import PostAPI from '../../../apis/admin/Post/PostAPI';
+import PostAPI from '../../../apis/admin/Categories/Post/PostAPI';
 import showMessage from '../../../Helpers/showMessage';
 import useStyle from '../../../hook/useStyles';
 import AdminPaths from '../../../Routes/RoutePaths/AdminPaths';
@@ -16,30 +17,34 @@ const BlogPage = () => {
     const [dataSource,setDataSource] = useState([]);
     const [dataForm,setDataForm] = useState({});
     const [params,setParams] = useState({});
+    const [loadingTable, setloadingTable] = useState(false)
     const columns = [
         {
           title: 'Hình ảnh',
           dataIndex: 'imageURL',
           render : (record) =>{
-            if (record) {
+            console.log(record)
+            if (record && record != null) {
               return (
                   <Image
                   width={150}
                   src={record}
                 /> 
-              )
+              ) 
             }
+            return null
           }
             
           
         },
         {
           title: 'Title',
-          render : (record) => 
-            <>
-            {<a onClick={() => navigate(AdminPaths.MANAGER_POST_FORM + '/' + record?._id)}>{record.title}</a>} {record.isTrending && <StockOutlined style={{ fontSize : 25,color : 'green' }} />}
-        </>
-          
+          render : (record) => {
+              if(record.type != 1) {
+                return  <a onClick={() => navigate(AdminPaths.MANAGER_POST_FORM + '/' + record?._id)}>{record.author_id?.full_name} - {record.title}</a>} {record.isTrending && <StockOutlined style={{ fontSize : 25,color : 'green' }} />
+              }
+             return <a onClick={() => navigate(AdminPaths.MANAGER_POST_FORM + '/' + record?._id)}>{record.title} {record.isTrending && <StockOutlined style={{ fontSize : 25,color : 'green' }} />}</a> 
+          }
         },
         {
           title: 'Danh mục',
@@ -113,11 +118,18 @@ const BlogPage = () => {
 
     const fetchDataBlog = async() => {
      try {
-        await PostAPI.fetchGetAllData(params)
+        // await PostAPI.fetchGetAllData(params)
+        // .then(res => {
+        //   if(res.status == HttpStatusCode.Ok) {
+        //     setDataSource(res.data)
+        //   }
+        // })
+        await AuthorAPI.fetchGetAllData({select : '_id full_name'})
         .then(res => {
           if(res.status == HttpStatusCode.Ok) {
-            setDataSource(res.data)
-          }
+            console.log(res.data,'res.data');
+            setDataForm(prev => ({...prev,role_id : res.data}));
+         }
         })
 
      } catch (error) {
@@ -141,24 +153,25 @@ const BlogPage = () => {
     }
 
     const fetchingSearching = async(values) => {
-      console.log(values)
+      setloadingTable(true)
       try {
-        await PostAPI.searchingDataResource(values)
+        await PostAPI.fetchGetAllData(values)
         .then(res => {
-           if(res.status == HttpStatusCode.Ok) {
-              
-           }
+            if(res.status  == HttpStatusCode.Ok) {
+              setDataSource(res.data);
+            }
         })
       } catch (error) {
         showMessage(error.message,'error');
-        return
       }
+      setloadingTable(false)
     }
 
     useEffect(() => {
       fetchDataBlog()
       fetchSearchBlog()
     },[])
+
 
 
     const handleRedirectForm = (typeAction) => {
@@ -170,7 +183,7 @@ const BlogPage = () => {
     return  (
         <div className="">
             <div className="flex justify-between items-centers my-8">
-                <div className="w-[50%]">
+                <div className="w-[60%]">
                   <FormSearchingData 
                       className=""
                       dataForm={dataForm}
@@ -193,6 +206,7 @@ const BlogPage = () => {
                     pagination={{
                         pageSize: 10,
                     }}
+                    loading={loadingTable}
                     // scroll={{
                     //     y: 55 * 5,
                     // }}

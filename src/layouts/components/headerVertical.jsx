@@ -1,12 +1,24 @@
-import { Badge, Col, Dropdown, Layout, Row, Typography } from "antd";
+import { Layout, Popover } from "antd";
+import moment from "moment";
+import 'moment/locale/vi';
 import { useState } from "react";
+import { MdAccountCircle, MdNotifications } from "react-icons/md";
 import { Link } from "react-router-dom";
 import SpanText from "../../components/Generals/SpanText";
+import tabNavNotifications from "./Notifications/components/tabNav";
+moment.locale('vi')
+
+
+
 
 const {Header} = Layout;
 const HeaderVertical = (props) => {
    const [openModal,setOpenModal] = useState(false);
    const [isScrolled, setIsScrolled] = useState(false);
+   const { logo } = props
+   const [hiddenSearching, SethiddenSearching] = useState(false);
+   const [openNotify , setOpenNotify] = useState(false)
+
 
 
 
@@ -25,54 +37,64 @@ const HeaderVertical = (props) => {
          }}
       >
          <div className="mx-auto w-full">
-         <Row className='row_header' justify='space-between' >
-                <Col xl={8} lg={9} className={'flex items-center justify-center overflow-visible'}>
-                    <Link to={'/'}>
-                        <img src={general?.logo} height={28} width={150}/>
-                    </Link>
+            <div className='flex justify-between items-center' style={{ height : 60, }} >
+              <div className="flex items-center w-[45%]">              
+                    <div className="">
+                        <Link to={'/'}>
+                            <img 
+                            // src={logo} 
+                            src='https://s1.vnecdn.net/vnexpress/restruct/i/v9559/v2_2019/pc/graphics/logo.svg'
+                            // className="w-full h-full"
+                            height={28} width={150}
+                            />
+                        </Link>
+                    </div>
+                    
                     <SpanText 
-                        class_name={'time_now'}
-                        text={dateFormat?.format('dddd, D/M/YYYY')}
+                        class_name={'time_now'} 
+                        text={moment().format('dddd, D/M/YYYY')}
                     /> 
-                </Col>
-                <Col xl={4} lg={2} className={'flex items-center justify-center'}>
-                       tetasdasd
-                </Col>
+              </div>
 
-                <Col xl={3}
-                     lg={5}
-                     className={'pr-4 flex items-center justify-center'}
-                >
-
-                    <Dropdown
-                        style={{minWidth: '21rem'}}
-                        className='dropdown-notify ml-2 cursor_pointer'
-                        menu={{
-                            items: []
-                        }}
-                        trigger={['click']}
-                    >
-                        <Badge>
-                            {/* <Icon component={} className='ant-icon-svg'/> */}
-                        </Badge>
-                    </Dropdown>
-
-
-                    <Typography.Paragraph className='mx-2 mb-0 primary_color text-nowrap'>{"Welcome"}</Typography.Paragraph>
-                    <Dropdown
-                        className='dropdown-user'
-                        menu={
-                            ''
-                        }
-                        trigger={['click']}
-                    >
-                        <img src={''}
-                             onClick={(e) => e.preventDefault()}
-                             className='avatar'
-                        />
-                    </Dropdown>
-                </Col>
-            </Row>
+              <div className="flex items-center w-[55%]">   
+                {/* <Col xl={4} lg={2} className="text-center"> */}
+                     <Link to='#' className="span_custom ml-8">
+                        Mới nhất
+                     </Link>
+                {/* </Col> */}
+                {/* <Col xl={4} lg={2} className="text-center"> */}
+                     <Link to='#' className="span_custom ml-8">
+                        Tin theo khu vực
+                     </Link>
+                {/* </Col> */}
+                {/* <Col xl={4} lg={2} className="text-center">
+                     <span className="cursor-pointer" onClick={}>
+                        <MdSearch color='#bdbdbd' style={{ width : 20 , height : 20 }} />
+                     </span>
+                </Col> */}
+                <div className="ml-8">
+                    <div className="flex items-center span_custom cursor-pointer">
+                            <MdAccountCircle />
+                            <span className="ml-2">Đăng nhập</span>
+                    </div>
+                </div>
+                <div className="ml-4 pr-4">
+                    <div className="flex items-center span_custom cursor-pointer">
+                           <Popover
+                                placement="bottom"
+                                content={tabNavNotifications}
+                                trigger="click"
+                                open={openNotify}
+                                className="ant-tabs-tab-width"
+                                onOpenChange={(open) => setOpenNotify(open)}
+                           >
+                                <MdNotifications className="span_custom" />
+                           </Popover>
+                    </div>
+                </div>
+              </div>
+              
+            </div>
          </div>
            
       </Header>

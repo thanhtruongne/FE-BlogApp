@@ -1,84 +1,82 @@
-    import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal, Upload } from "antd";
-import ImgCrop from 'antd-img-crop';
+import ImgCrop from "antd-img-crop";
 import React, { useEffect, useState } from "react";
-    const UploadThumbData = (
+
+const UploadThumbData = ({ dataForm, setData, name, form }) => {
+  const [fileList, setFileList] = useState([]);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewVisible, setPreviewVisible] = useState(false);
+
+  useEffect(() => {
+    if (dataForm?.imageURL) {
+      setFileList([
         {
-          data,
-          dataForm,
-          setData,
-          name,
-          label,
-          form
-        }
-      ) => {
-      const [fileList, setFileList] = useState([]);
-      const [previewImage, setPreviewImage] = useState("");
-      const [previewVisible, setPreviewVisible] = useState(false);
-      
+          uid: "-1",
+          name: "thumbnail.jpg",
+          status: "done",
+          url: dataForm.imageURL ?? null,
+        },
+      ]);
+    }
+  }, [dataForm?.imageURL]);
 
-      useEffect(() => {
-         if(dataForm?.imageURL) {
-          setFileList([
-            {
-              uid: "-1",
-              name: "thumbnail.jpg",
-              status: "done",
-              url: dataForm.imageURL, 
-            },
-          ]);
-         }
-      },[dataForm?.imageURL])
+  const handleChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
 
+    if (newFileList.length > 0) {
+      const file = newFileList[0].originFileObj || newFileList[0].url;
+      setData((prev) => ({ ...prev, thumb: file }));
+      form.setFieldValue(name, file);
+    }
+  };
 
-      const handleChange = ({ fileList: newFileList }) => {
-        setFileList(newFileList); // Giữ lại duy nhất 1 file
-        if (newFileList) {
-          const file = newFileList[0].originFileObj || newFileList[0].url;
-          setData((prev) => ({...prev,thumb : file})); 
-          form.setFieldValue(name, file);
-        }
-      };
-      const handlePreview = async (file) => {
-        if (file.url) {
-          setPreviewImage(file.url);
-        } else if (file.thumbUrl) {
-          setPreviewImage(file.thumbUrl);
-        } else {
-          setPreviewImage(URL.createObjectURL(file.originFileObj));
-        }
-        setPreviewVisible(true);
-      };
+  const handlePreview = async (file) => {
+    let imgSrc = file.url || file.thumbUrl;
 
+    if (!imgSrc && file.originFileObj) {
+      const blob = URL.createObjectURL(file.originFileObj);
+      imgSrc = blob;
+    }
 
-      return (
-        <div>
-          <ImgCrop rotationSlider >
-            <Upload
-                accept="image/*" 
-                fileList={fileList}
-                name={name}
-                action={null}
-                customRequest={({ file, onSuccess }) => {
-                  setTimeout(() => {
-                    onSuccess("ok"); 
-                  }, 1000);
-                }}
-                onPreview={handlePreview}
-                onChange={handleChange}
-              >
-                  {fileList.length === 0 && (
-                    <Button icon={<PlusOutlined />}>Tải ảnh lên</Button>
-                  )}
-                  
-              </Upload>
-          </ImgCrop>
-          <Modal open={previewVisible} footer={null} onCancel={() => setPreviewVisible(false)}>
-              <img alt="avatar preview" style={{ width: "100%" }} src={previewImage} />
-            </Modal>
-        </div>
+    setPreviewImage(imgSrc);
+    setPreviewVisible(true);
+  };
 
-      );
+  useEffect(() => {
+    return () => {
+      if (fileList) {
+        URL.revokeObjectURL(fileList[0]?.url);
+      }
     };
+  }, [fileList]);
 
-    export default UploadThumbData;
+  
+  return (
+    <div>
+      <ImgCrop rotationSlider>
+        <Upload
+          accept="image/*"
+          fileList={fileList}
+          name={name}
+          action={null}
+          customRequest={({ file, onSuccess }) => {
+            setTimeout(() => {
+              onSuccess("ok");
+            }, 1000);
+          }}
+          onPreview={handlePreview}
+          onChange={handleChange}
+        >
+          {fileList.length === 0 && <Button icon={<PlusOutlined />}>Tải ảnh lên</Button>}
+        </Upload>
+      </ImgCrop>
+
+      <Modal open={previewVisible} footer={null} onCancel={() => setPreviewVisible(false)}>
+        <img alt="avatar preview" style={{ width: "100%" }} src={previewImage} />
+      </Modal>
+    </div>
+  );
+};
+
+export default UploadThumbData;

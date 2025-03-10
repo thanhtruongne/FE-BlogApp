@@ -54,6 +54,16 @@ import React, { useEffect, useState } from "react";
       setPreviewVisible(true);
     };
 
+    useEffect(() => {
+      return () => {
+        fileList.forEach(file => {
+          if (file.url?.startsWith("blob:")) {
+            URL.revokeObjectURL(file.url);
+          }
+        });
+      };  
+    }, [fileList]);
+
 
     return (
        <div>

@@ -1,35 +1,46 @@
 import { CheckCircleFilled, CloseCircleFilled, InfoCircleFilled, SearchOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Form, Input, Select } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import showMessage from "../../../../Helpers/showMessage";
 import TreeSelectCustom from "../../../../components/Customs/Select/TreeSelect";
+import useDebounce from '../../../../hook/useDebounce';
 const { RangePicker } = DatePicker;
-
+const {Option} = Select
 const FormSearchingData = ({setData,dataForm,setDataForm,className,fetchData}) => {
    const [form] = Form.useForm();
    const [filter,setFilter] = useState({})
    const [loadingBtn,setLoadingBtn] = useState(false);
    const [isFormValid, setIsFormValid] = useState(false)
+   const [searchValue,setSearchValue] = useState('')
+   const debouncedSearchTerm = useDebounce(searchValue,1000)
+
 
    const handleSearch = () => {
-        setLoadingBtn(true)
+       setLoadingBtn(true)
        try {
           const values = form.getFieldsValue();
-          console.log(values)
+          console.log(values);
           if(values) {
+            if(!values.author_id || values.author_id.length  == 0) {
+                delete values.author_id;
+            }
             if(values.dateTime && values.dateTime.length > 0) {
+                values.createdAt = {};
                 if(values?.dateTime[1]) {
-                    if( values?.dateTime[1].isBefore(values.dateTime[0])) {
+                    if( values?.dateTime[1]?.isBefore(values.dateTime[0])) {
                         showMessage('Ngày kết thúc phải lớn hơn ngày bắt đầu!','error');
                         return;
                     }
+                    values.createdAt['lte'] = values?.dateTime[1].format("DD-MM-YYYY")
                 }
-                values.createAt = {
-                    gte :values.dateTime[0].format("DD-MM-YYYY"),
-                    lte : values.dateTime[1].format("DD-MM-YYYY")
-                }
-                delete values.dateTime
+                values.createdAt['gte'] = values?.dateTime[0].format("DD-MM-YYYY")
+
+                delete values.dateTime  
             }
+            if(values.search_query) {
+                values.text = {search : values.search_query}
+            }
+            delete values.search_query;
             fetchData(values)
           }
        } catch (error) {
@@ -38,6 +49,13 @@ const FormSearchingData = ({setData,dataForm,setDataForm,className,fetchData}) =
        }
        setLoadingBtn(false)
    }
+
+   useEffect(() => {
+    console.log('debounce')
+    // if (debouncedSearchTerm && debouncedSearchTerm.length > 1) {
+        handleSearch();
+    // }
+  }, [debouncedSearchTerm]);
    
 
 
@@ -72,12 +90,12 @@ const FormSearchingData = ({setData,dataForm,setDataForm,className,fetchData}) =
    ]
 
    const checkFormValidity = (changedValues,allValues) => {
-    const { status, dateTime , search_query , categories_id } = allValues;
-    if (status  || dateTime || search_query || categories_id?.length > 0) {
-      setIsFormValid(true);
-    } else {
-      setIsFormValid(false);
-    }
+        const { status, dateTime  ,author_id, categories_id } = allValues;
+        if (status  || dateTime || author_id?.length > 0 || categories_id?.length > 0) {
+            setIsFormValid(true);
+        } else {
+            setIsFormValid(false);
+        }
    }
 
    return (
@@ -99,9 +117,23 @@ const FormSearchingData = ({setData,dataForm,setDataForm,className,fetchData}) =
             isMultiple={true}
             isCheckable={true}
         />
+
+        <Form.Item name="author_id" className='py-2'>
+            <Select
+                mode="multiple"
+                size='middle'
+                style={{ width : 200 }}
+                placeholder="Chọn tác giả"
+                className='w-full'
+            >
+                {dataForm?.role_id && dataForm?.role_id?.map(item => {
+                    return <Option value={item?._id} >{item.full_name}</Option>
+                })}
+            </Select>   
+        </Form.Item>
         
         <Form.Item name="search_query" className='py-2'>
-          <Input type='text' placeholder="Tìm kiếm title" style={{ width: 200 }} />
+          <Input type='text' placeholder="Tìm kiếm title" onChange={(e) => setSearchValue(e.target.value)} style={{ width: 400 }} />
         </Form.Item>
 
         <Form.Item name="dateTime" className='py-2'>

@@ -1,18 +1,21 @@
+import { Layout } from 'antd';
 import React from 'react';
-import { Layout, Menu, theme, Col, Dropdown, Badge } from 'antd';
-const { Header, Footer } = Layout;
-import {SpanText} from '../../components/Generals/general_export';
-import HeaderVertical from '../components/headerVertical';
 import { Outlet } from 'react-router-dom';
+import HeaderVertical from '../components/headerVertical';
+import NavbarVertical from '../components/Navbar/NavbarVertical';
+const { Header, Footer } = Layout;
+const LayoutHorizontal = ({className,general,categories}) => {
+     const {logo , setting} = general;
+     
 
-const LayoutHorizontal = (props) => {
-    const {notifies, items ,avatar ,dateNow, logo} = props;
-    const {
-        token: { colorBgContainer, colorIcon },
-    } = theme.useToken();
+
     return (
         <div id='vertical-layout'>
             <HeaderVertical
+                logo={logo}
+            />
+            <NavbarVertical 
+               categories={categories}
             />
             <Layout className={'bg-white container'}>
                 <Layout
@@ -24,6 +27,7 @@ const LayoutHorizontal = (props) => {
                     <Outlet className='h-100'/>
                 </Layout>
             </Layout>
+
         </div>
         
    );

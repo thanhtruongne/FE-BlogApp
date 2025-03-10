@@ -1,7 +1,7 @@
 import slugify from "slugify";
 
 export const convertStringToSlug = (string) => {
-    if(!string && string == '') 
+    if(!string || string == '') 
         return null;
     return slugify(string ,{lower : true,strict : true,remove: /[*+~.()'"!:@]/g})    
 }

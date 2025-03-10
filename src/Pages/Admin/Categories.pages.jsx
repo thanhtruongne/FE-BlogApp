@@ -18,9 +18,9 @@ const CategoriesPages = () => {
     const [form] = Form.useForm()
     const [data,setData] = useState({
         title : '',
-        description : '',
+        description : null,
         status : 'Active',
-        parent_id : '',
+        parent_id : null,
         _id : '',
     })  
     const [params , setParams] = useState({})
