@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container {
+    width: 100%;
+    max-width: 1130px;
+    padding: 0 15px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.col-left-custom-home {
+    width: 780px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+
+}
+
+.col-right-top {
+    width: 320px;
+    padding-left: 20px;
+}
+
+.wrapper_folder {
+    flex-wrap: wrap;
+    flex-direction: column;
+    /* min-height: 530px;/ */
+}
+
+.article-topstory {
+    background: none;
+    padding-right: 0;
+}
+
+.image_thumb {
+    width: 520px;
+    margin: 0 20px 0 0;
+}
+.thumb-5x3 {
+    padding-bottom: 60%;
+}
+
+.thumb {
+    display: block;
+    overflow: hidden;
+    height: 0;
+    position: relative;
+    width: 100%;
+    background: #f4f4f4;
+}
+
+.thumb img {
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    /* left: 0; */
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+img {
+    border: 0;
+    font-size: 0;
+    line-height: 0;
+    max-width: 100%;
+}
+.wrapper-topstory-folder.wrapper-topstory-folder-v2 .article-topstory .title-news {
+    width: auto;
+    float: none;
+    margin-bottom: 10px;
+    padding-top: 20px;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.title-news a {
+    transition-duration: 200ms;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.7, 1, 0.7, 1);
+}
+
+.description {
+    clear: none;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 140%;
+    color: #4f4f4f;
+}
+
+.meta-news .count_cmt, .meta-news .icon_commend {
+    font-size: 12px;
+    color: #076db6;
+    display: inline-block;
+    text-decoration: none !important;
+}
+.meta-news {
+    color: #757575;
+    font-size: 14px;
+    line-height: 140%;
+    font-weight: 400 !important;
+    font-family: Arial;
+}
+
+.sub-news-top {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e5e5;
+    width: 100%;
+    padding-left: 0;
+    height: auto;
+}
+
+
+.list-sub-feature {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 0;
+    position: relative;
+    padding-right: 240px;
+}
+
+ul, li {
+    list-style-type: none;
+}
+
+.list-sub-feature li.data_list_item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    align-content: space-between;
+    width: 100%;
+    padding: 0;
+    margin-right: 20px;
+    position: relative;
+}
+
+.meta-news .cat {
+    font-family: "Merriweather", serif;
+    font-size: 14px;
+    color: #757575;
+    font-style: italic;
+    line-height: 140%;
+    margin-right: 0;
+}

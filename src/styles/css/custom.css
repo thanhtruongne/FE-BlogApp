@@ -3250,3 +3250,22 @@ justify-content: center;
 .ant-picker-range{
     width: 100% !important;
 }
+
+
+.time_now {
+    font-size: 14px;
+    line-height: 32px;
+    color: #757575;
+    position: relative;
+    margin-left: 20px;
+    padding-left: 15px;
+}
+.time_now::before {
+    content: "";
+    width: 1px;
+    height: 26px;
+    background: #e5e5e5;
+    position: absolute;
+    left: 0;
+    top: 2px;
+}
