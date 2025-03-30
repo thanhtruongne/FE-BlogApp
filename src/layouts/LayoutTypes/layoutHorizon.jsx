@@ -1,14 +1,12 @@
 import { Layout } from 'antd';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import Footer from '../components/Footer';
 import HeaderVertical from '../components/headerVertical';
 import NavbarVertical from '../components/Navbar/NavbarVertical';
-const { Header, Footer } = Layout;
 const LayoutHorizontal = ({className,general,categories}) => {
      const {logo , setting} = general;
      
-
-
     return (
         <div id='vertical-layout'>
             <HeaderVertical
@@ -17,16 +15,19 @@ const LayoutHorizontal = ({className,general,categories}) => {
             <NavbarVertical 
                categories={categories}
             />
-            <Layout className={'bg-white container'}>
+            <Layout>
                 <Layout
-                    className='pt-5 bg-white'
+                    className=''
                     style={{
-                        transition: 'all .4s'
+                        transition: 'all .4s',
+                        backgroundColor : "#fff"
                     }}
                 >
-                    <Outlet className='h-100'/>
+                    <Outlet className=''/>
                 </Layout>
             </Layout>
+
+            <Footer />
 
         </div>
         

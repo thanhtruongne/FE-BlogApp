@@ -33,7 +33,7 @@ const tabNavNotifications = () => {
           type="card"
           defaultActiveKey="notify"
           items={items}
-          className="h-[427px] relative overflow-y-auto"
+          className="h-[427px] relative overflow-y-auto tabnav_custom"
         />
     )
 }

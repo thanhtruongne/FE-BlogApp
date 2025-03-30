@@ -12,7 +12,6 @@ export function SidebarLinks(props) {
   };
 
   const createLinks = (routes) => {
-    console.log(routes)
     return routes.map((route, index) => {
          if(route?.key){
             return;

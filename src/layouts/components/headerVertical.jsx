@@ -16,7 +16,6 @@ const HeaderVertical = (props) => {
    const [openModal,setOpenModal] = useState(false);
    const [isScrolled, setIsScrolled] = useState(false);
    const { logo } = props
-   const [hiddenSearching, SethiddenSearching] = useState(false);
    const [openNotify , setOpenNotify] = useState(false)
 
 
@@ -24,10 +23,10 @@ const HeaderVertical = (props) => {
 
    return (
       <Header
-         className={'horizontal_header container'}
+         className={'horizontal_header'}
          style={{
                top: 0,
-               position: 'sticky',
+               position: 'relative',
                zIndex: 100,
                height: '4rem',
                display: 'flex',
@@ -36,7 +35,7 @@ const HeaderVertical = (props) => {
                background: '#fff'
          }}
       >
-         <div className="mx-auto w-full">
+         <div className="mx-auto w-full container">
             <div className='flex justify-between items-center' style={{ height : 60, }} >
               <div className="flex items-center w-[45%]">              
                     <div className="">
@@ -57,21 +56,12 @@ const HeaderVertical = (props) => {
               </div>
 
               <div className="flex items-center w-[55%]">   
-                {/* <Col xl={4} lg={2} className="text-center"> */}
                      <Link to='#' className="span_custom ml-8">
                         Mới nhất
                      </Link>
-                {/* </Col> */}
-                {/* <Col xl={4} lg={2} className="text-center"> */}
                      <Link to='#' className="span_custom ml-8">
                         Tin theo khu vực
                      </Link>
-                {/* </Col> */}
-                {/* <Col xl={4} lg={2} className="text-center">
-                     <span className="cursor-pointer" onClick={}>
-                        <MdSearch color='#bdbdbd' style={{ width : 20 , height : 20 }} />
-                     </span>
-                </Col> */}
                 <div className="ml-8">
                     <div className="flex items-center span_custom cursor-pointer">
                             <MdAccountCircle />

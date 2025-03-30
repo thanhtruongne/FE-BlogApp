@@ -10,7 +10,6 @@ const FormResourceCreate = ({data,handleSubmit,handleCloseModal,loadingBtn,setDa
   const handleSubmitData = async() => {
     try {
         const value = await form.validateFields()
-        console.log(value)
         if(value) 
             handleSubmit(value,type)      
     } catch (error) {

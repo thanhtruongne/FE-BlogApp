@@ -11,6 +11,9 @@ export const convertStringToSlug = (string) => {
 
 export default {
     ADMIN : "Admin",
-    GOC_NHIN_SLUG : 'goc-nhin'
+    GOC_NHIN_SLUG : 'goc-nhin',
+    VIDEO_SLUG : 'video',
+    KHOA_HOC_SLUG : 'khoa-hoc',
+    CONG_NGHE_SLUG : 'cong-nghe',
 }
 

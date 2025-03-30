@@ -38,7 +38,6 @@ import { convertStringToSlug } from "../../../utils/constants";
 
     const handleChange = ({ fileList: newFileList }) => {
       setFileList(newFileList);
-      console.log(newFileList,'newFileList')
       if (newFileList.length > 0) {
         const file = newFileList[0].originFileObj;
         const imageUrl = URL.createObjectURL(file);

@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
+/* Define a font-family utility class */
+ @layer components {
+    .font-merriweather {
+      font-family: "Merriweather", serif;
+    }
+  }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,8 +20,8 @@
 
 .col-left-custom-home {
     width: 780px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #e5e5e5;
+    /* padding-bottom: 20px; */
+    /* border-bottom: 1px solid #e5e5e5; */
 
 }
 

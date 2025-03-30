@@ -16,7 +16,7 @@ import UploadMultiple from './UploadMultiple';
 import UploadVideos from './UploadVideo';
 
 
-const FormBlogPage = () => {
+const FormBlogPage = ({setDataComment}) => {
     const{Option} = Select
     const [form] = Form.useForm();
     const [data,setData] = useState({})
@@ -66,6 +66,7 @@ const FormBlogPage = () => {
            await PostAPI.fetchGetDataDetail(id)
            .then(res => {
               if(res.status == HttpStatusCode.Ok) {
+                setDataComment(res.data.comments) //  set comment
                 setDataForm(res.data)
                 setIsTrending(res.data.isTrending)
                 setType(res.data.type)
@@ -86,7 +87,6 @@ const FormBlogPage = () => {
     }
       
     useEffect(() => {
-      console.log("fetchDataTree running");
       fetchDataTree();
     },[])
 
@@ -199,12 +199,17 @@ const FormBlogPage = () => {
         setHidden(true);
         setType(2) // set theo bài post theo type
       }
+      else if(typeof data == 'string' && data.includes(constants.VIDEO_SLUG)) {
+        setHidden(true);
+        setType(3) // set theo bài video
+      }
     }
 
 
     const handleChangeMediaType = (value) => {
         if(value == 3) {
           sethiddenVideo(true)
+
         } 
         else {
           sethiddenVideo(false)
@@ -272,7 +277,7 @@ const FormBlogPage = () => {
                        <Select  
                           allowClear
                           disabled={isDisabledSelect}
-                          defaultValue={1}
+                          // defaultValue={1}
                           onChange={handleChangeMediaType}
                           showSearch
                           style={{ width: 200 }}
@@ -296,7 +301,7 @@ const FormBlogPage = () => {
                     label="Thumbnail"
                     hidden={hidden}
                     className='pr-3'
-                    rules={!hidden ? [{required: true,message: 'Thumbnail thiệu không được bỏ trống'}] : null}
+                    // rules={!hidden ? [{required: true,message: 'Thumbnail thiệu không được bỏ trống'}] : null}
                   >
                     <UploadThumbData 
                         name="thumb"

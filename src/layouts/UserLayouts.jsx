@@ -41,7 +41,6 @@ const UserLayouts = () => {
 
 
     useEffect(() => {
-        console.log(22)
         if(!general) {
             fetchDataSetting()
         }

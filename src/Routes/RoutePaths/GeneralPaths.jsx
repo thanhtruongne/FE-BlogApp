@@ -1,8 +1,8 @@
-import React from "react"
 
 const HomeGeneral = {
     LOGIN : '/login',
     HOMEPAGE : '/home-page',
+    SLUG_DATA : "/:slug",
     NOTFOUND : '/404'
 }
 

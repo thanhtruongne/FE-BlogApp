@@ -54,7 +54,6 @@ const  AuthLoginSystem = () => {
        try {
         values.system = true
         const res = await AuthencationApi.loginAdminSystem(values);
-        console.log(res)
         if(res?.status != HttpStatusCode.Ok) {
           showMessage(res?.message, res?.status);
           setLoadingBtn(false);

@@ -16,14 +16,14 @@ const BlogPage = () => {
     const { styles } = useStyle();
     const [dataSource,setDataSource] = useState([]);
     const [dataForm,setDataForm] = useState({});
-    const [params,setParams] = useState({});
+    const [option,setOption] = useState({});
+    const [params,setParams] = useState(null);
     const [loadingTable, setloadingTable] = useState(false)
     const columns = [
         {
           title: 'Hình ảnh',
           dataIndex: 'imageURL',
           render : (record) =>{
-            console.log(record)
             if (record && record != null) {
               return (
                   <Image
@@ -118,17 +118,12 @@ const BlogPage = () => {
 
     const fetchDataBlog = async() => {
      try {
-        // await PostAPI.fetchGetAllData(params)
-        // .then(res => {
-        //   if(res.status == HttpStatusCode.Ok) {
-        //     setDataSource(res.data)
-        //   }
-        // })
+
         await AuthorAPI.fetchGetAllData({select : '_id full_name'})
         .then(res => {
           if(res.status == HttpStatusCode.Ok) {
-            console.log(res.data,'res.data');
             setDataForm(prev => ({...prev,role_id : res.data}));
+            setOption(res.options)
          }
         })
 
@@ -155,10 +150,12 @@ const BlogPage = () => {
     const fetchingSearching = async(values) => {
       setloadingTable(true)
       try {
+        console.log(values,'valuessss')
         await PostAPI.fetchGetAllData(values)
         .then(res => {
             if(res.status  == HttpStatusCode.Ok) {
               setDataSource(res.data);
+               setOption(res.options)
             }
         })
       } catch (error) {
@@ -172,12 +169,21 @@ const BlogPage = () => {
       fetchSearchBlog()
     },[])
 
-
+    useEffect(() => {
+      console.log(params,'params')
+       if(params) {
+          fetchingSearching(params)
+       }
+    },[params])
 
     const handleRedirectForm = (typeAction) => {
         if( typeAction == type.create) {
             navigate(AdminPaths.MANAGER_POST_FORM)
         }
+    }
+
+    const handleTableChange = async(pagination) => {
+      setParams({page: pagination});
     }
 
     return  (
@@ -204,7 +210,10 @@ const BlogPage = () => {
                     columns={columns}
                     dataSource={dataSource}
                     pagination={{
-                        pageSize: 10,
+                        current: option.page,
+                        pageSize: option.itemsPerPage,
+                        total: option.totalItems, 
+                        onChange: handleTableChange
                     }}
                     loading={loadingTable}
                     // scroll={{

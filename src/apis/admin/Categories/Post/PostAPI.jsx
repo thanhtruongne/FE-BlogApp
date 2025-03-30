@@ -4,7 +4,6 @@ import axiosIntance from '../../../../utils/axios';
 class PostAPI {
     
     async fetchStoreResourceData(payload) {
-        console.log(payload)
         return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/store', payload,{
             headers: {
                 "Content-Type": 'multipart/form-data'
@@ -13,7 +12,7 @@ class PostAPI {
     }
 
     async fetchGetAllData(payload) {
-        return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/getData',payload)
+        return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/getData', payload)
     }
 
     // async searchingDataResource(payload) {
@@ -26,7 +25,6 @@ class PostAPI {
 
 
     async fetchUpdateDataResource(id,payload) {
-        console.log(payload);
         return await axiosIntance.put(import.meta.env.VITE_APP_SERVER_LOCAL + '/post/update/' + id, payload);
     }
 

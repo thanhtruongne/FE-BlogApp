@@ -6,10 +6,9 @@ import WrapMenuVertical from "./WrapMenuVertical";
 
 const NavbarVertical = ({categories}) => {
    const [openModal,setOpenModal] = useState(false);
-   console.log(categories,'cate')
 
    return (
-     <section className="w-full bg-white sticky top-0" style={{ zIndex : 1000, }}>
+     <section className="w-full bg-white sticky top-0" style={{ zIndex : 100 }}>
          <nav className="w-full text-[14px] border-b border-t border-[#E5E5E5] border-solid">
             <div className="mx-auto" style={{  maxWidth : 1440 }}>     
                <ul className="px-[15px] mx-auto flex justify-center">
