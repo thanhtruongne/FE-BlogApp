@@ -3,6 +3,7 @@ import UserLayouts from './layouts/UserLayouts';
 import UserRoute from './Routes/Route/UserRoute';
 import GeneralPaths from "./Routes/RoutePaths/GeneralPaths";
 
+import { WebSocketProvider } from './contexts/useWebSocketsContexts';
 import AdminLayouts from './layouts/admins/AdminLayouts';
 import Error404 from "./Pages/404";
 import AuthLoginSystem from './Pages/Admin/Auth';
@@ -10,11 +11,8 @@ import PrivateRoute from "./Routes/PrivateRoute";
 import AdminRoute from './Routes/Route/AdminRoute';
 import AdminPaths from './Routes/RoutePaths/AdminPaths';
 
-
-
 function App() {
   const router = createBrowserRouter([
-     //admin
     {
       path : AdminPaths.LOGIN,
       element: <AuthLoginSystem />,
@@ -22,13 +20,15 @@ function App() {
     {
       element : 
         ( <PrivateRoute>
-
-          <AdminLayouts/>
-
+            <AdminLayouts/>
          </PrivateRoute>
          )
        ,
       children : AdminRoute
+    },
+    {
+     element :   <UserLayouts />,
+      children : UserRoute 
     },
     {
       path:'/',
@@ -39,15 +39,15 @@ function App() {
       path :  GeneralPaths.NOTFOUND,
       element : <Error404 />
     },
-    {
-      element : <UserLayouts />,
-      children : UserRoute 
-    },
   ])
 
 
   
-  return <RouterProvider router={router}/>;
+  return (
+    <WebSocketProvider>
+        <RouterProvider router={router}/>
+    </WebSocketProvider>
+  );
 }
 
 export default App

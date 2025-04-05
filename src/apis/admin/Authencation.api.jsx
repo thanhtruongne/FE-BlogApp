@@ -1,5 +1,5 @@
-import axiosIntance from '../utils/axios';
-import { getRefreshToken } from '../utils/cookies';
+import axiosIntance from '../../utils/axios';
+import { getRefreshToken } from '../../utils/cookies';
 
 class AuthencationApi {
     async loginAdminSystem(req) {

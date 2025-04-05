@@ -2538,7 +2538,68 @@ textarea:focus {
     border-radius: 4px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   }
-  
+.name_sub {
+    width: calc(100% - 48px);
+    padding-left: 10px;
+    color: #222;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Merriweather', serif;
+}
+.avatar_inner {
+    margin-right: 0;
+    color: #9F9F9F;
+    background: #E5E5E5;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 25px;
+    margin-top: -1px;
+}
+.custom-tabs .ant-tabs-nav {
+    width: 250px !important;
+}
+
+.custom-tabs .ant-tabs-nav-list {
+    width: 100%;
+}
+.custom_input_password_hidden {
+
+    .ant-input-affix-wrapper {
+        color: #000 !important;
+        background-color: none !important; 
+        border: none;
+        box-shadow: none;
+        cursor: not-allowed;
+        opacity: 1;  
+    }
+    .ant-input-affix-wrapper:hover {
+        background-color: none !important;  
+    }
+    .ant-input-suffix {
+        display: none !important;
+    }
+}
+.custom-tabs .ant-tabs-tab {
+    width: 100%;
+    transition: all 0.3s;
+}
+
+.custom-tabs .ant-tabs-tab-active {
+    background-color: #f0f7ff;
+}
+  .avatar_chart {
+    width: 48px;
+    height: 48px;
+    background: #E5E5E5;
+    text-align: center;
+    line-height: 48px;
+    font-size: 20px;
+    color: #fff;
+    overflow: hidden;
+    border-radius: 50%;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
   .newsletter-content {
     display: flex;
     align-items: center;

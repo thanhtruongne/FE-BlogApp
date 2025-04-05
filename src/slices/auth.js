@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import AuthencationApi from '../apis/Authencation.api';
+import AuthencationApi from '../apis/admin/Authencation.api';
 import constants from '../utils/constants';
 import { clearClientID, clearTokens, setClientID, setTokens } from '../utils/cookies';
 
@@ -30,12 +30,9 @@ const authSlice = createSlice({
     reducers : {
         login: (state,request) => {
             //lưu token, client-id và refreshToken vào cookie
-            console.log(request.payload)
             setTokens(request.payload.tokens.access_token, request.payload.tokens.refresh_token)
             setClientID(request.payload.data._id)
-
         },
-
         clearMessgage : (state,action) => {
             state.message = '';
         },

@@ -9,6 +9,14 @@ const CommentItem = ({data}) => {
   const [showReply, setShowReply] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const handleLikeUsed = () => {
+     try {
+        
+     } catch (error) {
+        
+     }
+  }
+
 
   const onFinish = (values) => {
    
@@ -46,7 +54,7 @@ const CommentItem = ({data}) => {
 
                         <div className="reaction_container">
                             <div className="reaction_total">
-                                <span className="item_like mr-1">
+                                <span className="item_like mr-1" onClick={handleLikeUsed}>
                                     <img width={14} height={14} src="https://s1.vnecdn.net/vnexpress/restruct/c/v3230/v2/wcomment/pc/vne/images/graphics/like.svg" alt="" />
                                 </span>
                                 {data.like && data.like > 0 && (<span className="ml-2 text-[#757575]">{data.like}</span>)}

@@ -6,7 +6,10 @@ export const convertStringToSlug = (string) => {
     return slugify(string ,{lower : true,strict : true,remove: /[*+~.()'"!:@]/g})    
 }
 
-
+export const extractMailName = (email) => {
+    const match = email?.match(/^([^@]+)@/);
+    return match ? match[1] : '';
+  };
 
 
 export default {

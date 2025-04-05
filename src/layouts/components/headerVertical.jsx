@@ -5,7 +5,9 @@ import { useState } from "react";
 import { MdAccountCircle, MdNotifications } from "react-icons/md";
 import { Link } from "react-router-dom";
 import SpanText from "../../components/Generals/SpanText";
+import ModalLogin from "../../Pages/Authencated/components/ModalLogin";
 import tabNavNotifications from "./Notifications/components/tabNav";
+import TabUserProvide from "./TabUserProvide";
 moment.locale('vi')
 
 
@@ -13,14 +15,10 @@ moment.locale('vi')
 
 const {Header} = Layout;
 const HeaderVertical = (props) => {
-   const [openModal,setOpenModal] = useState(false);
+   const {dispatch,navigate,logo,currentUser,isAuthenticated} = props;
    const [isScrolled, setIsScrolled] = useState(false);
-   const { logo } = props
    const [openNotify , setOpenNotify] = useState(false)
-
-
-
-
+   const [showLoginModal, setShowLoginModal] = useState(false);
    return (
       <Header
          className={'horizontal_header'}
@@ -63,29 +61,44 @@ const HeaderVertical = (props) => {
                         Tin theo khu vực
                      </Link>
                 <div className="ml-8">
-                    <div className="flex items-center span_custom cursor-pointer">
-                            <MdAccountCircle />
-                            <span className="ml-2">Đăng nhập</span>
-                    </div>
+                  {isAuthenticated && currentUser ? (
+                     <TabUserProvide user={currentUser}/>
+                   
+                  ) :  (
+                     <>
+                        <div className="flex items-center span_custom cursor-pointer" onClick={() => setShowLoginModal(!showLoginModal)}>
+                              <MdAccountCircle />
+                              <span className="ml-2">Đăng nhập</span>
+                        </div>
+                        <ModalLogin 
+                           isOpen={showLoginModal}
+                           setOpenModal={setShowLoginModal}
+                           dispatch={dispatch} 
+                           navigate={navigate} 
+                        />
+                     </>
+                  )}
                 </div>
                 <div className="ml-4 pr-4">
                     <div className="flex items-center span_custom cursor-pointer">
-                           <Popover
-                                placement="bottom"
-                                content={tabNavNotifications}
-                                trigger="click"
-                                open={openNotify}
-                                className="ant-tabs-tab-width"
-                                onOpenChange={(open) => setOpenNotify(open)}
-                           >
-                                <MdNotifications className="span_custom" />
-                           </Popover>
+                        <Popover
+                              placement="bottom"
+                              content={tabNavNotifications}
+                              trigger="click"
+                              open={openNotify}
+                              className="ant-tabs-tab-width"
+                              onOpenChange={(open) => setOpenNotify(open)}
+                        >
+                              <MdNotifications className="span_custom" />
+                        </Popover>
                     </div>
                 </div>
               </div>
               
             </div>
          </div>
+
+       
            
       </Header>
 

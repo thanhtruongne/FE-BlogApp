@@ -15,7 +15,6 @@ const Comment = ({data,loading}) => {
     const [loadingBtn,setLoadingBtn] = useState(false)
     const [form] = Form.useForm();
 
-
     const handleSubmitCommentParent = async(values) => {
         setLoadingBtn(true)
         try {

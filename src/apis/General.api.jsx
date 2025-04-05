@@ -41,8 +41,8 @@ class GeneralAPI {
         return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/comment/getMoreReply/' + id)
     }
 
-    async getCommentByQuery(id,params) {
-        return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/comment/getCommentByQuery/' + id,{params})
+    async getCommentByQuery(id) {
+        return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/comment/getCommentByQuery/' + id,)
     }
 
 }

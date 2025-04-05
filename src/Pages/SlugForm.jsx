@@ -20,7 +20,6 @@ const SlugForm = () => {
     try {
      await GeneralApi.getPageDataBySlug(slug)
      .then(res => {
-        console.log(res,'res')
         if(res.status == HttpStatusCode.Ok) {
             setData(res.data)
         }

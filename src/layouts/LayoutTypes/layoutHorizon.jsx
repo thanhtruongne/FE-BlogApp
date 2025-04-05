@@ -4,13 +4,18 @@ import { Outlet } from 'react-router-dom';
 import Footer from '../components/Footer';
 import HeaderVertical from '../components/headerVertical';
 import NavbarVertical from '../components/Navbar/NavbarVertical';
-const LayoutHorizontal = ({className,general,categories}) => {
-     const {logo , setting} = general;
-     
-    return (
+const LayoutHorizontal = (props) => {
+    const {general,categories,dispatch,navigate,isAuthenticated,currentUser} = props;
+    const {logo , setting} = general;
+        
+        return (
         <div id='vertical-layout'>
             <HeaderVertical
                 logo={logo}
+                dispatch={dispatch}
+                navigate={navigate}
+                isAuthenticated={isAuthenticated}
+                currentUser={currentUser}
             />
             <NavbarVertical 
                categories={categories}

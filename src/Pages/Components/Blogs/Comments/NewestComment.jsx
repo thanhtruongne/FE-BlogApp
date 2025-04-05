@@ -1,6 +1,6 @@
 import { Skeleton } from "antd";
 import { HttpStatusCode } from "axios";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import GeneralApi from "../../../../apis/General.api";
 import CommentShow from "./components/CommentShow";
@@ -8,15 +8,13 @@ import CommentShow from "./components/CommentShow";
 const NewestComment = ({postId}) => {
     const [data,setData] = useState(null);
     const [loading,setLoading] = useState(false);
-
+    
+    console.log(postId,'sss')
 
     const fetchData = async() => {
         setLoading(true)
         try {
-            await GeneralApi.getCommentByQuery(postId,{
-                limit: 4,
-                sort : "-createdAt"
-            }).then(res => {
+            await GeneralApi.getCommentByQuery(postId).then(res => {
                 if(res.status == HttpStatusCode.Ok) {
                     setData(res.data)
                 }
@@ -31,7 +29,7 @@ const NewestComment = ({postId}) => {
         if(!data) {
             fetchData()
         }
-    },[data])
+    },[postId, data])
 
 
 
@@ -52,4 +50,4 @@ const NewestComment = ({postId}) => {
     )
 }
 
-export default NewestComment;
+export default memo(NewestComment);

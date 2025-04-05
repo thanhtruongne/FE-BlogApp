@@ -4,15 +4,19 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import GeneralApi from '../apis/General.api';
 // import '../assets/sass/client.css';
+import { useNavigate } from 'react-router-dom';
 import { MenuButton, ScrollPage } from '../components/Generals/general_export';
+import useAuth from '../hook/useAuth';
 import { getCategory } from '../slices/category';
 import { setGeneral } from '../slices/generalSlice';
 import LayoutHorizontal from "./LayoutTypes/layoutHorizon";
 
 const UserLayouts = () => { 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const general = useSelector((state) => state.general); 
     const {categories} = useSelector(state => state.category);
+    const {isAuthenticated,currentUser} = useAuth();
     const fetchDataSetting = async() => {
          try {
             await GeneralApi.getDataLayout()
@@ -81,6 +85,10 @@ const UserLayouts = () => {
             className='horizontal'
             general={general}
             categories={categories}
+            dispatch={dispatch}
+            navigate={navigate}
+            isAuthenticated={isAuthenticated}
+            currentUser={currentUser}
         />
         
     </Layout>
