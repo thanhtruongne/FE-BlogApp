@@ -1,12 +1,14 @@
-import { LogoutOutlined } from '@ant-design/icons';
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Tabs } from 'antd';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import useAuth from '../../../hook/useAuth';
 import './styles/TabDataUserInfo.css';
+import SavedPost from './tabs/SavedPost';
 import UserInfoTab from './tabs/UserInfoTab';
 
-const TabDataUserInfo = ({type}) => {
+const TabDataUserInfo = (props) => {
+    const  { type , handleLogOutForm} = props
     const {currentUser , isAuthenticated} = useAuth()
 
     const dispatch = useDispatch()
@@ -28,7 +30,7 @@ const TabDataUserInfo = ({type}) => {
         {
           key: 'saved',
           label: 'Tin đã lưu',
-          children: <div className="p-4">Chưa có tin đã lưu</div>,
+          children: <SavedPost />,
         },
         {
           key: 'viewed',
@@ -38,7 +40,7 @@ const TabDataUserInfo = ({type}) => {
         {
           key: 'logout',
           label: (
-            <span className="text-gray-600">
+            <span className="text-gray-600 cursor-pointer" onClick={handleLogOutForm}>
               <LogoutOutlined className="mr-2" />
               Thoát
             </span>

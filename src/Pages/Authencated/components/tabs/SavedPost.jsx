@@ -1,8 +1,8 @@
-import { CommentOutlined } from "@ant-design/icons";
+import { CommentOutlined, SaveOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-const SavedPost = () => {
-    
+const SavedPost = (props) => {
+     const { user } = props
     return (
         <div className="w-full w-[240px] relative" style={{ maxWidth: "562px"}}>
 
@@ -10,14 +10,14 @@ const SavedPost = () => {
 
             <div className="wrapper_data_content w-full">
                 {/* render_item */}
-                <div className="mb-4 pb-5" style={{ borderBottom : "1px solid #e5e5e5" }}>
-                    <div className="thumb_art_data w-[28%] mr-[12px]">
+                <div className="mb-4 pb-5 float-left w-full" style={{ borderBottom : "1px solid #e5e5e5" }}>
+                    <div className="thumb_art_data w-[34%] mr-[12px] float-left">
                         <Link className="h-0 pb-[60%] overflow-hidden relative bg-[#f4f4f4] block">
                             <img src="https://i1-vnexpress.vnecdn.net/2025/02/19/202502190830437792-z6330979302-5445-8072-1739940104.jpg?w=180&h=108&q=100&dpr=1&fit=crop&s=8elk3S9WIwjZdiAKjx2lsA" className="w-full object-fit-cover" alt="" />
                         </Link>
                     </div>
 
-                    <div className="item_info">
+                    <div className="item_info float-right">
                         <h3 className="title_data mb-3">
                             <Link className="text-[#222222]">
                             Hơn 8 tỷ USD xây đường sắt Lào Cai - Hà Nội - Hải Phòng
@@ -32,12 +32,12 @@ const SavedPost = () => {
                                 <span>19/2/2025</span>
                             </div>
 
-                            <div className="social_new_cate flx items-center">
+                            <div className="social_new_cate flex items-center">
                                 <div className="inline-block">
                                     <Link className="ml-0 w-[20px] h-[20px] inline-block text-[#222]">
                                         <CommentOutlined />
                                     </Link>
-                                    <span className="inline-block ml-2 text-[14px] text-[#B42652]">8</span>
+                                    <span className="inline-block text-[14px] text-[#B42652]">8</span>
                                 </div>
 
                                 <div className="inline-block ml-4 text-[14px] relative">
@@ -46,7 +46,7 @@ const SavedPost = () => {
                                     </svg>
                                 </div>
                                 <div className="ml-3">
-                                    <SaveOutlined />
+                                    <SaveOutlined className="cursor-pointer" style={{ color: "#9f224e" }} />
                                 </div>
                             </div>
                         </div>

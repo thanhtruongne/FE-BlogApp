@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import AuthencationApi from '../apis/admin/Authencation.api';
+import AuthorAPI from '../apis/Author.jsx';
 import constants from '../utils/constants';
 import { clearClientID, clearTokens, setClientID, setTokens } from '../utils/cookies';
 
@@ -16,6 +17,15 @@ const initialState = {
 
 export const getUserCurrent = createAsyncThunk('user/currentUser',async(data,{rejectWithValue}) => {
     const response = await AuthencationApi.profile()
+    if(response.status < 200 || response.status >= 300 || !response) 
+        return rejectWithValue(response)
+
+    return response;
+        
+})
+
+export const logOutUser = createAsyncThunk('author/logout',async(data,{rejectWithValue}) => {
+    const response = await AuthorAPI.logoutForm()
     if(response.status < 200 || response.status >= 300 || !response) 
         return rejectWithValue(response)
 
@@ -62,6 +72,28 @@ const authSlice = createSlice({
         });
 
         builder.addCase(getUserCurrent.rejected, (state, action) => {
+            state.loading = false;
+            state.isAuthenticated= false;
+            state.isAdmin= null;
+            state.currentUser = null;
+            state.error = 'Có lỗi xảy ra !!!';
+        });
+
+
+        builder.addCase(logOutUser.pending, (state) => {
+            state.loading = true;
+         });
+ 
+        builder.addCase(logOutUser.fulfilled, (state, action) => {
+            state.loading = false;
+            state.isAuthenticated = false;
+            state.currentUser = null;
+            state.isAdmin = false;
+             clearTokens()
+            clearClientID();
+        });
+
+        builder.addCase(logOutUser.rejected, (state, action) => {
             state.loading = false;
             state.isAuthenticated= false;
             state.isAdmin= null;

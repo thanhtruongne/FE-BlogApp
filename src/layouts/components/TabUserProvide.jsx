@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import GeneralPaths from '../../Routes/RoutePaths/GeneralPaths';
 
-const TabUserProvide = ({user}) => {
+const TabUserProvide = ({user,handleLogOutForm}) => {
     const nameExtract = user?.full_name ? user?.full_name : user?.email;
     const items = [
         {
@@ -60,6 +60,7 @@ const TabUserProvide = ({user}) => {
             label: (
                 <Link 
                 to='#'
+                onClick={handleLogOutForm}
                 className="text-[15px] block text-[#4F4F4F] px-[15px] relative w-full"
                  >
                   Thoát  <LogoutOutlined className="ml-2" />

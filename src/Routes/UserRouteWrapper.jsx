@@ -1,22 +1,21 @@
 import { useDispatch } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import useAuth from '../hook/useAuth';
 import { logout } from '../slices/auth';
 import { clearClientID, clearTokens } from '../utils/cookies';
-import GeneralPaths from './RoutePaths/GeneralPaths';
 
 const UserRouteWrapper = ({children}) => {
   const dispatch = useDispatch()
+  const location = useLocation()
 
-
-  const { isAuthenticated, accessToken , clientId , currentUser } = useAuth();
-  if (!isAuthenticated ||  !accessToken || !clientId || !currentUser) {
+  const {accessToken , clientId } = useAuth();
+  if ( !accessToken || !clientId) {
     dispatch(logout())
     clearTokens()
     clearClientID();
-    return <Navigate to={GeneralPaths.NOTFOUND} replace />;
+    return <Navigate to="/" replace state={{ from: location }} />;
   }
   return children
 };
 
-export default UserRouteWrapper;
+export default UserRouteWrapper; 

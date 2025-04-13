@@ -30,19 +30,6 @@ const useAuth = () => {
       return false;
     }
   };
-
-  // Check if token is expired
-  const isTokenExpired = (token) => {
-    if (!token) return true;
-
-    try {
-      const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-      return tokenPayload.exp * 1000 < Date.now();
-    } catch (error) {
-      return true;
-    }
-  };
-
   // Verify client ID
   const isValidClientId = (id) => {
     return typeof id === 'string' && id.length > 0;
@@ -56,22 +43,19 @@ const useAuth = () => {
         throw new Error('Missing credentials');
       }
 
-      // Validate token format and expiration
-      if (!isValidToken(accessToken) || isTokenExpired(accessToken)) {
-        throw new Error('Invalid or expired token');
+      if (!isValidToken(accessToken)) {
+        throw new Error('Invalid token');
       }
 
-      // Validate clientId
       if (!isValidClientId(clientId)) {
         throw new Error('Invalid client ID');
       }
-
-      // If we don't have user data, fetch it
       if (!currentUser && accessToken) {
         await dispatch(getUserCurrent()).unwrap();
       }
 
       return true;
+
     } catch (error) {
       console.error('Auth check failed:', error);
       handleAuthError();
