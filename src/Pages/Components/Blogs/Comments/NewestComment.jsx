@@ -1,50 +1,23 @@
 import { Skeleton } from "antd";
-import { HttpStatusCode } from "axios";
-import { memo, useEffect, useState } from "react";
+import { memo } from "react";
 
-import GeneralApi from "../../../../apis/General.api";
 import CommentShow from "./components/CommentShow";
 
-const NewestComment = ({postId}) => {
-    const [data,setData] = useState(null);
-    const [loading,setLoading] = useState(false);
-    
-    console.log(postId,'sss')
-
-    const fetchData = async() => {
-        setLoading(true)
-        try {
-            await GeneralApi.getCommentByQuery(postId).then(res => {
-                if(res.status == HttpStatusCode.Ok) {
-                    setData(res.data)
-                }
-            })
-        } catch (error) {
-            console.log(error);
-        }
-        setLoading(false)
-    }
-
-    useEffect(() => {
-        if(!data) {
-            fetchData()
-        }
-    },[postId, data])
-
-
-
+const NewestComment = ({ data, loading }) => {
     return (
-         <div className="w-full">
+        <div className="w-full">
             <div className="m-0 list_commentData">
-                  <div className="comment-container pb-3">
-                        {loading ? Array(4).fill(null).map((item,index) => <Skeleton className="mt-2" active key={index} />) : (
-                            data && data?.length && data.map((item,key) => {
+                <div className="comment-container pb-3">
+                    {data && data?.length > 0 ? (
+                        loading ? Array(4).fill(null).map((item, index) => <Skeleton className="mt-2" active key={index} />) : (
+                            data && data?.length && data.map((item, key) => {
                                 return (
                                     <CommentShow item={item} key={key} />
                                 )
                             })
-                        )}
-                  </div>
+                        )
+                    ) : 'Chưa có bình luận nào.'}
+                </div>
             </div>
         </div>
     )

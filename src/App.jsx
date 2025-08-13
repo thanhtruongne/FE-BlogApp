@@ -1,52 +1,67 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
-import UserLayouts from './layouts/UserLayouts';
-import UserRoute from './Routes/Route/UserRoute';
-import GeneralPaths from "./Routes/RoutePaths/GeneralPaths";
-
-import { WebSocketProvider } from './contexts/useWebSocketsContexts';
+import { ModalLoginProvider } from "./contexts/ModalContext";
+import { NotifyProvider } from "./contexts/NotifyContext";
+import { SocketProvider } from "./contexts/SocketContext";
 import AdminLayouts from './layouts/admins/AdminLayouts';
+import UserLayouts from './layouts/UserLayouts';
 import Error404 from "./Pages/404";
 import AuthLoginSystem from './Pages/Admin/Auth';
 import PrivateRoute from "./Routes/PrivateRoute";
 import AdminRoute from './Routes/Route/AdminRoute';
+import UserRoute from './Routes/Route/UserRoute';
 import AdminPaths from './Routes/RoutePaths/AdminPaths';
+import GeneralPaths from "./Routes/RoutePaths/GeneralPaths";
+
+const queryClient = new QueryClient();
 
 function App() {
   const router = createBrowserRouter([
     {
-      path : AdminPaths.LOGIN,
+      path: AdminPaths.LOGIN,
       element: <AuthLoginSystem />,
     },
     {
-      element : 
-        ( <PrivateRoute>
-            <AdminLayouts/>
-         </PrivateRoute>
-         )
-       ,
-      children : AdminRoute
+      element:
+        (
+          <PrivateRoute>
+            {/*  notify provider*/}
+            <NotifyProvider>
+              <AdminLayouts />
+            </NotifyProvider>
+
+          </PrivateRoute>
+        )
+      ,
+      children: AdminRoute
     },
     {
-     element :   <UserLayouts />,
-      children : UserRoute 
+      path: '/home',
+      element: <Navigate to={GeneralPaths.HOMEPAGE} replace />,
     },
     {
-      path:'/',
-      element: <Navigate to={GeneralPaths.HOMEPAGE} replace/>,
+      element: (
+        <ModalLoginProvider>
+          <UserLayouts />
+        </ModalLoginProvider>
+      ),
+      children: UserRoute
     },
     // 404
     {
-      path :  GeneralPaths.NOTFOUND,
-      element : <Error404 />
+      path: GeneralPaths.NOTFOUND,
+      element: <Error404 />
     },
   ])
 
 
-  
+
   return (
-    <WebSocketProvider>
-        <RouterProvider router={router}/>
-    </WebSocketProvider>
+    <SocketProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </SocketProvider>
   );
 }
 

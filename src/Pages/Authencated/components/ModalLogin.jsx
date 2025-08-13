@@ -1,6 +1,6 @@
 import { Button, Form, Input, Modal } from 'antd';
 import { HttpStatusCode } from 'axios';
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { FaApple, FaFacebook, FaGoogle, FaPencilAlt } from 'react-icons/fa';
 import AuthorAPI from '../../../apis/Author';
 import showMessage from '../../../Helpers/showMessage';
@@ -22,7 +22,7 @@ const PASSWORD_RULES = [
   { required: true, message: 'Mật khẩu không được bỏ trống!' }
 ];
 
-const ModalLogin = ({ isOpen, setOpenModal,dispatch,navigate }) => {
+const ModalLogin = ({ isOpen, setOpenModal, dispatch, navigate }) => {
   const [form] = Form.useForm();
   const [state, setState] = useState({
     loading: false,
@@ -58,16 +58,16 @@ const ModalLogin = ({ isOpen, setOpenModal,dispatch,navigate }) => {
 
   const handleAuthSuccess = useCallback(async (response) => {
     try {
-        showMessage(response?.message, 'success');
-        dispatch(login(response.data));
-        await dispatch(getUserCurrent()).unwrap();
-        setOpenModal(false)
-        // window.location.reload()
-        // navigate(GeneralPaths.HOMEPAGE);
+      showMessage(response?.message, 'success');
+      dispatch(login(response.data));
+      await dispatch(getUserCurrent()).unwrap();
+      setOpenModal(false)
+      // window.location.reload()
+      // navigate(GeneralPaths.HOMEPAGE);
     } catch (error) {
-        showMessage(error.message || 'Có lỗi xảy ra', 'error');
+      showMessage(error.message || 'Có lỗi xảy ra', 'error');
     }
-    
+
   }, [dispatch, navigate]);
 
   const handleEmailCheck = useCallback(async (email) => {
@@ -79,7 +79,7 @@ const ModalLogin = ({ isOpen, setOpenModal,dispatch,navigate }) => {
         title: true,
         isExists: !!response?.data?._id
       }));
-      
+
       if (response?.data?._id) {
         form.setFieldValue('email', response.data.email);
       }
@@ -89,7 +89,7 @@ const ModalLogin = ({ isOpen, setOpenModal,dispatch,navigate }) => {
   const handleAuthentication = useCallback(async (values) => {
     const authMethod = isExists ? AuthorAPI.loginForm : AuthorAPI.registerForm;
     const response = await authMethod(values);
-    
+
     if (response?.status === HttpStatusCode.Ok) {
       await handleAuthSuccess(response);
     }
@@ -198,7 +198,7 @@ const ModalLogin = ({ isOpen, setOpenModal,dispatch,navigate }) => {
     <Modal open={isOpen} onCancel={handleCloseModal} footer={null}>
       <div className="bg-white rounded-lg w-full p-6">
         <div className="flex justify-center mb-6">
-          <img src="/logo.png" alt="Logo" className="h-8" />
+          <img src="https://s1.vnecdn.net/vnexpress/restruct/i/v9559/v2_2019/pc/graphics/logo.svg" alt="Logo" className="h-8" />
         </div>
 
         <h2 className="text-center text-2xl font-bold mb-6">
@@ -216,7 +216,7 @@ const ModalLogin = ({ isOpen, setOpenModal,dispatch,navigate }) => {
         {renderSocialButtons}
 
         <p className="mt-6 text-xs text-gray-600 text-center">
-          Tiếp tục là đồng ý với điều khoản sử dụng và chính sách bảo mật. 
+          Tiếp tục là đồng ý với điều khoản sử dụng và chính sách bảo mật.
           Tài khoản của bạn được reCAPTCHA bảo vệ.
         </p>
       </div>

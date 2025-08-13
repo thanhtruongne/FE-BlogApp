@@ -6,11 +6,12 @@ import GeneralPaths from '../../Routes/RoutePaths/GeneralPaths';
 
 const TabUserProvide = ({user,handleLogOutForm}) => {
     const nameExtract = user?.full_name ? user?.full_name : user?.email;
+    console.log(nameExtract)
     const items = [
         {
           label: (
-            <div className="px-[15px]">
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium bg-[#E5E5E5] text-[#9F9F9F]">{nameExtract?.charAt(0)}</span>
+            <div className="px-[15px] flex items-center">
+                  {generateAvatar(user)}
                 <span className="name_sub">{nameExtract}</span>
             </div>
           ),
@@ -77,14 +78,33 @@ const TabUserProvide = ({user,handleLogOutForm}) => {
             className='px-5'
         >
             <div className="flex items-center cursor-pointer">
-                <div className="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium bg-[#E5E5E5] text-[#9F9F9F]">
-                    {nameExtract?.charAt(0)?.toUpperCase()}
-                </div>
+                 {generateAvatar(user,nameExtract)}
+          
                 <DownOutlined style={{ width : '8px' }} className="ml-1" />
             </div>
         </Dropdown>
     )
 }   
+
+
+
+const generateAvatar = (user,nameExtract) => {
+    return (
+        <>
+        {user && user?.imageURL ? (
+            <div className="inline-flex items-center justify-center w-8 h-8 rounded-full">
+                <img src={user?.imageURL} alt=""  className="rounded-full"/>
+            </div>
+        
+        ) : (
+            <div className="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium bg-[#E5E5E5] text-[#9F9F9F]">
+                {nameExtract?.charAt(0)?.toUpperCase()}
+            </div>
+        )}
+        </>
+    )
+    
+}
 
 export default TabUserProvide;
 

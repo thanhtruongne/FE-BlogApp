@@ -6,7 +6,7 @@ class GeneralAPI {
     }
 
     async getDataPostNew(params) {
-        return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/getData',{params})
+        return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/getData', { params })
     }
 
     async getCategoryNavbar() {
@@ -25,24 +25,31 @@ class GeneralAPI {
         return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/' + slug)
     }
 
-    async createCommentBlog(id,payload) {
+    async createCommentBlog(id, payload) {
         return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/comment/store/' + id, payload)
     }
-    
-    async removeCommentBlog(id) {
-        return await axiosIntance.delete(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/comment/delete/' + id)
-    }
-
-    async changeStatusComment(id,payload) {
-        return await axiosIntance.put(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/comment/changeStatus/' + id,payload)
-    }
-
     async getMoreCommentReply(id) {
         return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/comment/getMoreReply/' + id)
     }
 
-    async getCommentByQuery(id) {
-        return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/comment/getCommentByQuery/' + id,)
+    async getCommentByQuery(id, params) {
+        return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/comment/getCommentByQuery/' + id, { params })
+    }
+
+    async likeCommentPost(id, postId) {
+        return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/comment/like/' + id, {
+            postId
+        })
+    }
+
+    async unLikeCommentPost(id, postId) {
+        return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/comment/unLike/' + id, {
+            postId
+        })
+    }
+
+    async handleSavePost(postID) {
+        return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_GENERAL_LOCAL + '/post/save-or-unsave/' + postID)
     }
 
 }

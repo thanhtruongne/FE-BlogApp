@@ -8,7 +8,7 @@ import CommentItem from "./CommentItem";
 
 
 
-const CommentShow = ({item}) => {
+const CommentShow = ({ item, postId }) => {
     const [loading, setLoading] = useState(false);
     const [replies, setReplies] = useState([]);
     const [showReplies, setShowReplies] = useState(false);
@@ -21,27 +21,30 @@ const CommentShow = ({item}) => {
         try {
             setLoading(true);
             await GeneralApi.getMoreCommentReply(item._id)
-            .then(res => {
-                if(res.status == HttpStatusCode.Ok){
-                    setReplies(res.data);
-                    setShowReplies(true);
-                }
-            })
+                .then(res => {
+                    if (res.status == HttpStatusCode.Ok) {
+                        setReplies(res.data);
+                        setShowReplies(true);
+                    }
+                })
 
         } catch (error) {
             console.error(error);
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     };
 
-
     return (
         <div className="comment_item_data">
-            <CommentItem data={item} />
+            <CommentItem
+                data={item}
+                postId={postId}
+                parentID={item?._id}
+            />
             {
                 item.replyCount >= 1 && (
-                    <div className="reply pb-0 text-[#4f4f4f] w-full mt-3">
+                    <div className="reply pb-0 text-[#4f4f4f] w-full mt-3 ml-[50px]">
                         {loading ? (
                             <Spin size="small" className="ml-2" />
                         ) : !showReplies && (
@@ -51,15 +54,15 @@ const CommentShow = ({item}) => {
                             </span>
                         )}
                     </div>
-            )}   
+                )}
             {showReplies && replies.length > 0 && (
                 <div className="replies-container ml-8">
                     {replies.map(reply => (
-                        <CommentItem data={reply} />    
+                        <CommentShow item={reply} postId={postId} />
                     ))}
                 </div>
-            )} 
-        </div> 
+            )}
+        </div>
     )
 }
 

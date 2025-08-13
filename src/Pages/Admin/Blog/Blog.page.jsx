@@ -216,9 +216,6 @@ const BlogPage = () => {
                         onChange: handleTableChange
                     }}
                     loading={loadingTable}
-                    // scroll={{
-                    //     y: 55 * 5,
-                    // }}
                 />
             </div>
         </div>

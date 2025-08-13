@@ -10,58 +10,58 @@ import { clearClientID, clearTokens, setClientID, setTokens } from '../utils/coo
 const initialState = {
     currentUser: null,
     isAuthenticated: false,
-    isAdmin : false,
+    isAdmin: false,
     error: '',
     loading: false,
 }
 
-export const getUserCurrent = createAsyncThunk('user/currentUser',async(data,{rejectWithValue}) => {
+export const getUserCurrent = createAsyncThunk('user/currentUser', async (data, { rejectWithValue }) => {
     const response = await AuthencationApi.profile()
-    if(response.status < 200 || response.status >= 300 || !response) 
+    if (response.status < 200 || response.status >= 300 || !response)
         return rejectWithValue(response)
 
     return response;
-        
+
 })
 
-export const logOutUser = createAsyncThunk('author/logout',async(data,{rejectWithValue}) => {
+export const logOutUser = createAsyncThunk('author/logout', async (data, { rejectWithValue }) => {
     const response = await AuthorAPI.logoutForm()
-    if(response.status < 200 || response.status >= 300 || !response) 
+    if (response.status < 200 || response.status >= 300 || !response)
         return rejectWithValue(response)
 
     return response;
-        
+
 })
 
 
 const authSlice = createSlice({
-    name : "auth",
+    name: "auth",
     initialState,
-    reducers : {
-        login: (state,request) => {
+    reducers: {
+        login: (state, request) => {
             //lưu token, client-id và refreshToken vào cookie
             setTokens(request.payload.tokens.access_token, request.payload.tokens.refresh_token)
             setClientID(request.payload.data._id)
         },
-        clearMessgage : (state,action) => {
+        clearMessgage: (state, action) => {
             state.message = '';
         },
-        
+
         logout: (state) => {
             state.isAuthenticated = false;
             state.isAdmin = false;
             state.currentUser = null
-
             //lưu token và refreshToken vào cookie
             clearTokens()
             clearClientID();
         },
-    
-       
+
+
+
     },
-    extraReducers : (builder) => {
+    extraReducers: (builder) => {
         builder.addCase(getUserCurrent.pending, (state) => {
-           state.loading = true;
+            state.loading = true;
         });
 
         builder.addCase(getUserCurrent.fulfilled, (state, action) => {
@@ -73,8 +73,8 @@ const authSlice = createSlice({
 
         builder.addCase(getUserCurrent.rejected, (state, action) => {
             state.loading = false;
-            state.isAuthenticated= false;
-            state.isAdmin= null;
+            state.isAuthenticated = false;
+            state.isAdmin = null;
             state.currentUser = null;
             state.error = 'Có lỗi xảy ra !!!';
         });
@@ -82,27 +82,27 @@ const authSlice = createSlice({
 
         builder.addCase(logOutUser.pending, (state) => {
             state.loading = true;
-         });
- 
+        });
+
         builder.addCase(logOutUser.fulfilled, (state, action) => {
             state.loading = false;
             state.isAuthenticated = false;
             state.currentUser = null;
             state.isAdmin = false;
-             clearTokens()
+            clearTokens()
             clearClientID();
         });
 
         builder.addCase(logOutUser.rejected, (state, action) => {
             state.loading = false;
-            state.isAuthenticated= false;
-            state.isAdmin= null;
+            state.isAuthenticated = false;
+            state.isAdmin = null;
             state.currentUser = null;
             state.error = 'Có lỗi xảy ra !!!';
         });
     }
 })
 
-export const { login, logout, clearMessgage  } = authSlice.actions
+export const { login, logout, clearMessgage } = authSlice.actions
 
 export default authSlice.reducer    
