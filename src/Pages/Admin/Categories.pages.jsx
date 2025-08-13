@@ -68,7 +68,7 @@ const CategoriesPages = () => {
       setLoadingSwitch(true)
    
       try {
-        const response = await CategoriesAPI.fetchChangeStatus(_id,value)
+        await CategoriesAPI.fetchChangeStatus(_id,value)
         .then(res => {
           if(res?.status == HttpStatusCode.Ok) {
             showMessage(res?.message,'success')
@@ -147,12 +147,20 @@ const CategoriesPages = () => {
         setLoadingBtn(true)
         try {
            if(type == typeAction.create) {
-              const response = await CategoriesAPI.storeCategoriesData(data)
+               await CategoriesAPI.storeCategoriesData(data)
               .then(res => {
                 if(res?.status == HttpStatusCode.Ok) {
                   showMessage(res.message,'success');
                 }      
               })
+           }
+           if(type == typeAction.edit) {
+            await CategoriesAPI.updateCategoriesData(data?._id,data)
+            .then(res => {
+              if(res?.status == HttpStatusCode.Ok) {
+                showMessage(res.message,'success');
+              }      
+            })
            }
            fetchDataTree()
            handleCloseModal()

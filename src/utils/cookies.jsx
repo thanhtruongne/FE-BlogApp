@@ -5,14 +5,14 @@ const setTokens = (accessToken, refreshToken) => {
       // secure: true,       
       httpOnly: false,    
       sameSite: "Strict", 
-      // expires: 1          
+      expires: 1          
     });
   
     Cookies.set("refreshToken", refreshToken, { 
       // secure: true,
       httpOnly: false,
       sameSite: "Strict",
-      // expires: 7 
+      expires: 7 
     });
   };
 

@@ -1,27 +1,24 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
+import useAuth from "../hook/useAuth";
 import { logout } from "../slices/auth";
-import { clearClientID, clearTokens, getAccessToken, getClientID } from "../utils/cookies";
+import { clearClientID, clearTokens } from "../utils/cookies";
 import GeneralPaths from "./RoutePaths/GeneralPaths";
 
 
-
-const PrivateRoute = ({children}) => {
+const PrivateRoute = ({ children }) => {
     const dispatch = useDispatch()
-    const {isAuthenticated , isAdmin} = useSelector((state) => state.auth);
+    const { isAuthenticated, isAdmin, accessToken, clientId } = useAuth();
 
-    const accessToken = getAccessToken();
-    const clientID = getClientID();
-
-    if(isAuthenticated && isAdmin && accessToken && clientID) 
+    if (isAuthenticated || isAdmin || accessToken || clientId) {
         return children
-
-    if(isAuthenticated) {
+    }
+    else {
         dispatch(logout())
         clearTokens()
         clearClientID();
+        return <Navigate to={GeneralPaths.NOTFOUND} replace />;
     }
-    return <Navigate to={GeneralPaths.NOTFOUND}  replace/>;
 
 }
 

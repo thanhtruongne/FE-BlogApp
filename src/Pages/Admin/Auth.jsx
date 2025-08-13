@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import AuthencationApi from "../../apis/Authencation.api";
+import AuthencationApi from "../../apis/admin/Authencation.api";
 import { logoPNG } from "../../assets/svg_export";
 import showMessage from "../../Helpers/showMessage";
 import AdminPaths from "../../Routes/RoutePaths/AdminPaths";
@@ -54,7 +54,6 @@ const  AuthLoginSystem = () => {
        try {
         values.system = true
         const res = await AuthencationApi.loginAdminSystem(values);
-        console.log(res)
         if(res?.status != HttpStatusCode.Ok) {
           showMessage(res?.message, res?.status);
           setLoadingBtn(false);

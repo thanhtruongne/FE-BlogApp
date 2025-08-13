@@ -7,6 +7,10 @@ class CategoriesAPI {
         return await axiosIntance.post(import.meta.env.VITE_APP_SERVER_LOCAL + '/categories/store', payload)
     }
 
+    async updateCategoriesData(id,payload) {
+        return await axiosIntance.put(import.meta.env.VITE_APP_SERVER_LOCAL + '/categories/update/' + id, payload)
+    }
+
     async fetchDataTreeCate() {
         return await axiosIntance.get(import.meta.env.VITE_APP_SERVER_LOCAL + '/categories/treeData')
     }

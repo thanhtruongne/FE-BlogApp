@@ -19,7 +19,6 @@ const FormSearchingData = ({setData,dataForm,setDataForm,className,fetchData}) =
        setLoadingBtn(true)
        try {
           const values = form.getFieldsValue();
-          console.log(values);
           if(values) {
             if(!values.author_id || values.author_id.length  == 0) {
                 delete values.author_id;
@@ -51,7 +50,6 @@ const FormSearchingData = ({setData,dataForm,setDataForm,className,fetchData}) =
    }
 
    useEffect(() => {
-    console.log('debounce')
     // if (debouncedSearchTerm && debouncedSearchTerm.length > 1) {
         handleSearch();
     // }

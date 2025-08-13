@@ -1,21 +1,80 @@
-import React, { useState } from "react";
-import Dropdown from '../dropdown/index'
-import { FiAlignJustify } from "react-icons/fi";
-import { Link } from "react-router-dom";
-// import navbarimage from "assets/img/layout/Navbar.png";
-import { BsArrowBarUp } from "react-icons/bs";
-import { FiSearch } from "react-icons/fi";
-import { RiMoonFill, RiSunFill } from "react-icons/ri";
+import { Badge, Skeleton } from 'antd';
+import { HttpStatusCode } from "axios";
+import { useContext, useEffect, useState } from "react";
+import { FiAlignJustify, FiSearch } from "react-icons/fi";
 import {
-  IoMdNotificationsOutline,
-  IoMdInformationCircleOutline,
+  IoMdNotificationsOutline
 } from "react-icons/io";
-// import avatar from "assets/img/avatars/avatar4.png";
+import { Link } from "react-router-dom";
+import General from "../../../apis/admin/General";
+import { NotifyContext } from '../../../contexts/NotifyContext';
+import showMessage from "../../../Helpers/showMessage";
+import { socket } from "../../../services/sockets/socket";
+import Dropdown from '../dropdown/index';
+import Notifications from './notifications';
+
 
 const Navbar = (props) => {
   const { onOpenSidenav, brandText } = props;
-  const [darkmode, setDarkmode] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [params, setParams] = useState({});
+  const [loadingNotify, setLoadingNotify] = useState(false)
+  const { countNotify, setNotify } = useContext(NotifyContext)
 
+
+
+  useEffect(() => {
+    socket.on('notify_admin', (payload) => {
+      console.log(payload, 'socket')
+      let count = 0;
+      setNotifications((prev) => {
+        const dataEx = [...prev, payload];
+        dataEx.map(item => {
+          if (!item.markAread) {
+            count++;
+          }
+        })
+        setNotify(count)
+        return dataEx;
+      });
+
+    });
+
+    if (notifications) {
+      handleNotifications()
+    }
+    return () => {
+      socket.off('notify_admin');
+    };
+
+
+  }, []);
+
+  const handleNotifications = async () => {
+    setLoadingNotify(true)
+    try {
+      await General.getNotifications(params)
+        .then((res) => {
+          if (res.status == HttpStatusCode.Ok) {
+            let count = 0;
+            setNotifications(res.data)
+            res.data.map(item => {
+              if (!item.markAread) {
+                count++;
+              }
+            })
+            setNotify(count)
+          }
+        })
+        .catch(error => {
+          showMessage(error.message, 'error')
+        })
+
+    } catch (error) {
+      console.log(error)
+    }
+    setLoadingNotify(false)
+  }
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
       <div className="ml-[6px]">
@@ -49,115 +108,38 @@ const Navbar = (props) => {
         {/* start Notification */}
         <Dropdown
           button={
-            <p className="cursor-pointer">
-              <IoMdNotificationsOutline className="h-4 w-4 text-gray-600 dark:text-white" />
-            </p>
+            <Badge count={countNotify}>
+              <p className="cursor-pointer relative">
+                <IoMdNotificationsOutline className="h-7 w-7 text-gray-600 dark:text-white" />
+              </p>
+            </Badge>
           }
           animation="origin-[65%_0%] md:origin-top-right transition-all duration-300 ease-in-out"
           children={
-            <div className="flex w-[360px] flex-col gap-3 rounded-[20px] bg-white p-4 shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none sm:w-[460px]">
+            <div className="flex w-[500px] overflow-y-auto max-h-[400px] flex-col gap-3 rounded-[20px] bg-white p-4 shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
               <div className="flex items-center justify-between">
                 <p className="text-base font-bold text-navy-700 dark:text-white">
-                  Notification
+                  Thông báo
                 </p>
                 <p className="text-sm font-bold text-navy-700 dark:text-white">
                   Mark all read
                 </p>
               </div>
+              {loadingNotify ? (
+                Array(notifications?.length ?? 6).fill(null).map((item, key) => {
+                  return <Skeleton active paragraph={{ rows: 2 }}></Skeleton>
+                })
+              ) : (
+                <div className="">
+                  {notifications && notifications?.length > 0 ? <Notifications data={notifications} /> : <span>Chưa có thông báo.</span>}
+                </div>
+              )}
 
-              <button className="flex w-full items-center">
-                <div className="flex h-full w-[85px] items-center justify-center rounded-xl bg-gradient-to-b from-brandLinear to-brand-500 py-4 text-2xl text-white">
-                  <BsArrowBarUp />
-                </div>
-                <div className="ml-2 flex h-full w-full flex-col justify-center rounded-lg px-1 text-sm">
-                  <p className="mb-1 text-left text-base font-bold text-gray-900 dark:text-white">
-                    New Update: Horizon UI Dashboard PRO
-                  </p>
-                  <p className="font-base text-left text-xs text-gray-900 dark:text-white">
-                    A new update for your downloaded item is available!
-                  </p>
-                </div>
-              </button>
-
-              <button className="flex w-full items-center">
-                <div className="flex h-full w-[85px] items-center justify-center rounded-xl bg-gradient-to-b from-brandLinear to-brand-500 py-4 text-2xl text-white">
-                  <BsArrowBarUp />
-                </div>
-                <div className="ml-2 flex h-full w-full flex-col justify-center rounded-lg px-1 text-sm">
-                  <p className="mb-1 text-left text-base font-bold text-gray-900 dark:text-white">
-                    New Update: Horizon UI Dashboard PRO
-                  </p>
-                  <p className="font-base text-left text-xs text-gray-900 dark:text-white">
-                    A new update for your downloaded item is available!
-                  </p>
-                </div>
-              </button>
             </div>
           }
-          classNames={"py-2 top-4 -left-[230px] md:-left-[440px] w-max"}
+          classNames={"py-2 top-4 -left-[230px] md:-left-[473px] w-max"}
         />
-        {/* start Horizon PRO */}
-        <Dropdown
-          button={
-            <p className="cursor-pointer">
-              <IoMdInformationCircleOutline className="h-4 w-4 text-gray-600 dark:text-white" />
-            </p>
-          }
-          children={
-            <div className="flex w-[350px] flex-col gap-2 rounded-[20px] bg-white p-4 shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
-              <div
-                style={{
-                  // backgroundImage: `url(${navbarimage})`,
-                  backgroundImage: '',
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                }}
-                className="mb-2 aspect-video w-full rounded-lg"
-              />
-              <a
-                target="blank"
-                href="https://horizon-ui.com/pro?ref=live-free-tailwind-react"
-                className="px-full linear flex cursor-pointer items-center justify-center rounded-xl bg-brand-500 py-[11px] font-bold text-white transition duration-200 hover:bg-brand-600 hover:text-white active:bg-brand-700 dark:bg-brand-400 dark:hover:bg-brand-300 dark:active:bg-brand-200"
-              >
-                Buy Horizon UI PRO
-              </a>
-              <a
-                target="blank"
-                href="https://horizon-ui.com/docs-tailwind/docs/react/installation?ref=live-free-tailwind-react"
-                className="px-full linear flex cursor-pointer items-center justify-center rounded-xl border py-[11px] font-bold text-navy-700 transition duration-200 hover:bg-gray-200 hover:text-navy-700 dark:!border-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white dark:active:bg-white/10"
-              >
-                See Documentation
-              </a>
-              <a
-                target="blank"
-                href="https://horizon-ui.com/?ref=live-free-tailwind-react"
-                className="hover:bg-black px-full linear flex cursor-pointer items-center justify-center rounded-xl py-[11px] font-bold text-navy-700 transition duration-200 hover:text-navy-700 dark:text-white dark:hover:text-white"
-              >
-                Try Horizon Free
-              </a>
-            </div>
-          }
-          classNames={"py-2 top-6 -left-[250px] md:-left-[330px] w-max"}
-          animation="origin-[75%_0%] md:origin-top-right transition-all duration-300 ease-in-out"
-        />
-        <div
-          className="cursor-pointer text-gray-600"
-          onClick={() => {
-            if (darkmode) {
-              document.body.classList.remove("dark");
-              setDarkmode(false);
-            } else {
-              document.body.classList.add("dark");
-              setDarkmode(true);
-            }
-          }}
-        >
-          {darkmode ? (
-            <RiSunFill className="h-4 w-4 text-gray-600 dark:text-white" />
-          ) : (
-            <RiMoonFill className="h-4 w-4 text-gray-600 dark:text-white" />
-          )}
-        </div>
+
         {/* Profile & Dropdown */}
         <Dropdown
           button={

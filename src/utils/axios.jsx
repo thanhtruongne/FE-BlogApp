@@ -1,5 +1,5 @@
 import axios from 'axios';
-import AuthencationApi from '../apis/Authencation.api';
+import AuthencationApi from '../apis/admin/Authencation.api';
 import { store } from '../slices';
 import { logout } from '../slices/auth';
 import { clearClientID, clearTokens, getAccessToken, getClientID, setTokens } from './cookies';
@@ -14,6 +14,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
+    
     const token = getAccessToken();
     if (token) {
       config.headers.Authorization = token;

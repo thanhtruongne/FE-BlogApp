@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../../components/Admins/navbar";
 import Sidebar from "../../components/Admins/sidebar";
@@ -59,6 +59,7 @@ export default function AdminLayouts(props) {
               brandText={currentRoute}
               secondary={getActiveNavbar(AdminRoute)}
               {...rest}
+
             />
             <div className="pt-5s mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
               <Outlet />
